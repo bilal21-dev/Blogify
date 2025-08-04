@@ -121,7 +121,7 @@ const Navbar = () => {
 
                 {/* Mobile Menu */}
                 {isMobileMenuOpen && (
-                    <div className="fixed top-20 left-0 w-full bg-gradient-to-br from-slate-900/98 via-blue-900/98 to-slate-900/98 backdrop-blur-xl md:hidden z-50 border-t border-white/10 shadow-2xl">
+                    <div className="fixed top-20 left-0 w-full bg-gradient-to-br from-slate-900/98 via-blue-900/98 to-slate-900/98 backdrop-blur-xl md:hidden z-[9999] border-t border-white/10 shadow-2xl">
                         <div className="flex flex-col items-center space-y-6 py-8 animate-fade-in">
                             {navItems.map((item) => (
                                 <div key={item.key} className="relative group transform transition-all duration-500 opacity-0 translate-y-4 animate-slide-in">
