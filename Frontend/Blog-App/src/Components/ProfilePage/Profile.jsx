@@ -285,7 +285,7 @@ const ProfilePage = () => {
         animation: 'flip-in-hor-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
     }
     return (
-        <div className="profile-page min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+        <div className="profile-page min-h-screen bg-gradient-to-br from-slate-500 via-blue-200 to-purple-400">
             <ProfileHeader />
             
             {/* Premium Section Header */}
@@ -310,7 +310,7 @@ const ProfilePage = () => {
                     {myblogs.map((blog, index) => {
                         const cardKey = `myblogs-${index}`;
                         return (
-                            <div key={cardKey} className="group perspective-1000 w-full h-[480px]">
+                            <div key={cardKey} className="group perspective-1000 w-full h-[420px]">
                                 <div className={`relative w-full h-full transition-all duration-700 transform-style-3d ${flippedCards[cardKey] ? 'rotate-y-180' : ''}`}>
                                     {/* Front of Card */}
                                     <div className="absolute w-full h-full backface-hidden">
@@ -430,7 +430,7 @@ const ProfilePage = () => {
                     {sharedPosts.map((blog, index) => {
                         const cardKey = `shared-${index}`;
                         return (
-                            <div key={cardKey} className="group perspective-1000 w-full h-[480px]">
+                            <div key={cardKey} className="group perspective-1000 w-full h-[420px]">
                                 <div className={`relative w-full h-full transition-all duration-700 transform-style-3d ${flippedCards[cardKey] ? 'rotate-y-180' : ''}`}>
                                     {/* Front of Card */}
                                     <div className="absolute w-full h-full backface-hidden">

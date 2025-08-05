@@ -44,7 +44,7 @@ const Navbar = () => {
         {
             key: '1',
             label: user ? (
-                <div className="flex items-center gap-3 px-4 py-2 text-slate-700 hover:text-blue-600 transition-colors duration-200">
+                <div className="flex items-center gap-3 px-4 py-2 text-white hover:text-blue-600 transition-colors duration-200">
                     <CgProfile className='text-blue-600 text-lg' />
                     <NavLink to={`/profile/${user._id}`} className="font-medium">Profile</NavLink>
                 </div>
@@ -53,7 +53,7 @@ const Navbar = () => {
         {
             key: '2',
             label: (
-                <div className="flex items-center gap-3 px-4 py-2 text-slate-700 hover:text-red-600 transition-colors duration-200 cursor-pointer"
+                <div className="flex items-center gap-3 px-4 py-2 text-white hover:text-red-600 transition-colors duration-200 cursor-pointer"
                     onClick={handleLogout}>
                     <IoMdLogOut className='text-red-600 text-lg' />
                     <span className="font-medium">Logout</span>
@@ -74,32 +74,87 @@ const Navbar = () => {
                     height: '80px',
                 }}
             >
-                <div className="flex items-center justify-between w-full md:w-auto">
-                    {/* Blogverse Logo - on left in mobile */}
-                    <div className="flex items-center space-x-2 md:space-x-3 order-1 md:order-none">
-                        <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                            <span className="text-white font-bold text-md md:text-lg">B</span>
+                {/* Mobile Layout */}
+                <div className="flex items-center justify-between w-full md:hidden">
+                    {/* Mobile + Not Logged In: Logo (left) Menu toggle (right) */}
+                    {!profile && (
+                        <>
+                            {/* Logo on left */}
+                            <div className="flex items-center space-x-2">
+                                <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                                    <span className="text-white font-bold text-md">B</span>
+                                </div>
+                                <div className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 font-bold text-xl tracking-wide">
+                                    BLOGVERSE
+                                </div>
+                            </div>
+
+                            {/* Menu toggle on right */}
+                            <button
+                                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                                className="text-white/90 hover:text-white text-xl focus:outline-none transition-all duration-300 hover:scale-110 p-1 rounded-lg hover:bg-white/10"
+                            >
+                                {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+                            </button>
+                        </>
+                    )}
+
+                    {/* Mobile + Logged In: Menu toggle (left) Logo (centered) Profile image (right) */}
+                    {profile && (
+                        <>
+                            {/* Menu toggle on left */}
+                            <button
+                                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                                className="text-white/90 hover:text-white text-xl focus:outline-none transition-all duration-300 hover:scale-110 p-1 rounded-lg hover:bg-white/10"
+                            >
+                                {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+                            </button>
+
+                            {/* Logo centered */}
+                            <div className="flex items-center space-x-2 absolute left-1/2 transform -translate-x-1/2">
+                                <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                                    <span className="text-white font-bold text-md">B</span>
+                                </div>
+                                <div className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 font-bold text-xl tracking-wide">
+                                    BLOGVERSE
+                                </div>
+                            </div>
+
+                            {/* Profile image on right */}
+                            <Dropdown
+                                menu={{ items }}
+                                trigger={['click']}
+                                placement="bottomRight"
+                                overlayClassName="premium-dropdown"
+                            >
+                                <div className="flex items-center cursor-pointer group p-1 rounded-2xl hover:bg-white/10 transition-all duration-300">
+                                    <div className="relative">
+                                        <img 
+                                            src={profilePic} 
+                                            className="h-10 w-10 rounded-2xl object-cover ring-2 ring-white/20 group-hover:ring-blue-400/50 transition-all duration-300 shadow-lg" 
+                                            alt="Profile"
+                                        />
+                                        <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-slate-900 shadow-lg"></div>
+                                    </div>
+                                </div>
+                            </Dropdown>
+                        </>
+                    )}
+                </div>
+
+                {/* Desktop Layout - unchanged */}
+                <div className="hidden md:flex items-center justify-between w-full">
+                    {/* Blogverse Logo */}
+                    <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                            <span className="text-white font-bold text-lg">B</span>
                         </div>
-                        <div className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 font-bold text-xl md:text-2xl tracking-wide">
+                        <div className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 font-bold text-2xl tracking-wide">
                             BLOGVERSE
                         </div>
                     </div>
 
-                    {/* Toggle Button - on right in mobile */}
-                    <div className="md:hidden order-2 md:order-none">
-                        <button
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="text-white/90 hover:text-white text-xl md:text-2xl focus:outline-none transition-all duration-300 hover:scale-110 p-1 md:p-2 rounded-lg hover:bg-white/10"
-                        >
-                            {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-                        </button>
-                    </div>
-                </div>
-
-
-
-                {/* Desktop Navigation */}
-                <div className="hidden md:block">
+                    {/* Desktop Navigation */}
                     <div className="flex items-center space-x-6 bg-white/5 backdrop-blur-sm rounded-2xl px-8 border border-white/10">
                         {navItems.map((item) => (
                             <div key={item.key} className="relative group">
@@ -110,18 +165,70 @@ const Navbar = () => {
                                         }`,
                                     onClick: () => handleMenuClick({ key: item.key })
                                 })}
-                                {/* {activeKey !== item.key && (
-                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
-                                )} */}
                             </div>
                         ))}
                     </div>
-                </div>
 
+                    {/* User Profile Section or Login/Signup buttons */}
+                    {profile ? (
+                        <div className="relative">
+                            <Dropdown
+                                menu={{ items }}
+                                trigger={['click']}
+                                placement="bottomRight"
+                                overlayClassName="premium-dropdown"
+                            >
+                                <div className="flex items-center space-x-3 cursor-pointer group p-2 rounded-2xl hover:bg-white/10 transition-all duration-300">
+                                    <div className="relative">
+                                        <img 
+                                            src={profilePic} 
+                                            className="h-12 w-12 rounded-2xl object-cover ring-2 ring-white/20 group-hover:ring-blue-400/50 transition-all duration-300 shadow-lg" 
+                                            alt="Profile"
+                                        />
+                                        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 shadow-lg"></div>
+                                    </div>
+                                    <div className="hidden lg:block">
+                                        <div className="text-white/90 text-sm font-medium">Welcome back</div>
+                                        <div className="text-white/60 text-xs">{user?.name || 'User'}</div>
+                                    </div>
+                                </div>
+                            </Dropdown>
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-1 p-1 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl">
+                            <Link
+                                to="/signup"
+                                className={`px-6 py-2 text-base font-semibold rounded-xl transition-all duration-300 ${curForm === 'signup'
+                                    ? 'text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg ring-2 ring-blue-400/30 transform scale-105'
+                                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                                    }`}
+                                onClick={() => {
+                                    setForm('signup');
+                                    setActiveKey(null);
+                                }}
+                            >
+                                Sign Up
+                            </Link>
+                            <Link
+                                to="/login"
+                                className={`px-6 py-2 text-base font-semibold rounded-xl transition-all duration-300 ${curForm === 'login'
+                                    ? 'text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg ring-2 ring-blue-400/30 transform scale-105'
+                                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                                    }`}
+                                onClick={() => {
+                                    setForm('login');
+                                    setActiveKey(null);
+                                }}
+                            >
+                                Login
+                            </Link>
+                        </div>
+                    )}
+                </div>
 
                 {/* Mobile Menu */}
                 {isMobileMenuOpen && (
-                    <div className="fixed top-20 left-0 w-full bg-gradient-to-br from-slate-900/98 via-blue-900/98 to-slate-900/98 backdrop-blur-xl md:hidden z-[9999] border-t border-white/10 shadow-2xl">
+                    <div className="fixed top-20 left-0 w-full bg-gradient-to-br from-slate-900/98 via-blue-900/98 to-slate-900/98 backdrop-blur-xl md:hidden z-[999] border-t border-white/10 shadow-2xl">
                         <div className="flex flex-col items-center space-y-6 py-8 animate-fade-in">
                             {navItems.map((item) => (
                                 <div key={item.key} className="relative group transform transition-all duration-500 opacity-0 translate-y-4 animate-slide-in">
@@ -172,62 +279,6 @@ const Navbar = () => {
                                 </div>
                             )}
                         </div>
-                    </div>
-                )}
-
-                {/* User Profile Section (Desktop only) */}
-                {profile ? (
-                     <div className="relative">
-                        <Dropdown
-                            menu={{ items }}
-                            trigger={['click']}
-                            placement="bottomRight"
-                            overlayClassName="premium-dropdown"
-                        >
-                            <div className="flex items-center space-x-3 cursor-pointer group p-2 rounded-2xl hover:bg-white/10 transition-all duration-300">
-                                <div className="relative">
-                                    <img 
-                                        src={profilePic} 
-                                        className="h-12 w-12 rounded-2xl object-cover ring-2 ring-white/20 group-hover:ring-blue-400/50 transition-all duration-300 shadow-lg" 
-                                        alt="Profile"
-                                    />
-                                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 shadow-lg"></div>
-                                </div>
-                                <div className="hidden lg:block">
-                                    <div className="text-white/90 text-sm font-medium">Welcome back</div>
-                                    <div className="text-white/60 text-xs">{user?.name || 'User'}</div>
-                                </div>
-                            </div>
-                        </Dropdown>
-                    </div>
-                ) : (
-                    <div className="hidden md:flex items-center gap-1 p-1 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl">
-                        <Link
-                            to="/signup"
-                            className={`px-6 py-2 text-base font-semibold rounded-xl transition-all duration-300 ${curForm === 'signup'
-                                ? 'text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg ring-2 ring-blue-400/30 transform scale-105'
-                                : 'text-white/80 hover:text-white hover:bg-white/10'
-                                }`}
-                            onClick={() => {
-                                setForm('signup');
-                                setActiveKey(null);
-                            }}
-                        >
-                            Sign Up
-                        </Link>
-                        <Link
-                            to="/login"
-                            className={`px-6 py-2 text-base font-semibold rounded-xl transition-all duration-300 ${curForm === 'login'
-                                ? 'text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg ring-2 ring-blue-400/30 transform scale-105'
-                                : 'text-white/80 hover:text-white hover:bg-white/10'
-                                }`}
-                            onClick={() => {
-                                setForm('login');
-                                setActiveKey(null);
-                            }}
-                        >
-                            Login
-                        </Link>
                     </div>
                 )}
 
@@ -321,5 +372,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-

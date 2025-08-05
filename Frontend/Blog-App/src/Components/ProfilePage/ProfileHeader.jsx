@@ -544,7 +544,7 @@ const ProfileHeader = () => {
     return (
         <div className="relative">
             {/* Background with Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-600 to-purple-700"></div>
             <div className="absolute inset-0 bg-black/20"></div>
             
             {/* Content */}

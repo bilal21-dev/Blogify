@@ -384,7 +384,7 @@ const Post = () => {
   };
 
   return (
-    <div className="profile-page min-h-screen bg-gradient-to-br from-black via-blue-50 to-purple-50">
+    <div className="profile-page min-h-screen bg-gradient-to-br from-slate-900 via-blue-600 to-purple-700">
       {showAlert && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
           <Alert
@@ -440,7 +440,7 @@ const Post = () => {
                 blog.likes.includes(loggedInUser._id);
               
               return (
-                <div key={index} className="group perspective-1000 w-full h-[480px]" style={animation}>
+                <div key={index} className="group perspective-1000 w-full h-[420px]" style={animation}>
                   <div className={`relative w-full h-full transition-all duration-700 transform-style-3d ${flippedCards[index] ? 'rotate-y-180' : ''}`}>
                     {/* Front of Card */}
                     <div className="absolute w-full h-full backface-hidden">
