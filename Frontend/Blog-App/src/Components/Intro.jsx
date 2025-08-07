@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Globe, PenTool, Users, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
+import BlurText from "./BlurText";
 
 const Intro = () => {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -61,6 +61,10 @@ const Intro = () => {
         { icon: '👥', text: 'Connect', position: { top: '35%', right: '25%' }, delay: 3 },
         { icon: '📖', text: 'Stories', position: { top: '75%', left: '20%' }, delay: 3.5 }
     ];
+
+    const handleAnimationComplete = () => {
+        console.log('Animation completed!');
+    };
 
     return (
         <div className="relative min-h-screen overflow-hidden">
@@ -158,8 +162,13 @@ const Intro = () => {
                 <div className="max-w-4xl mx-auto text-center">
                     {/* Main Heading */}
                     <motion.div variants={itemVariants} className="mb-8">
-                        <motion.h1 
-                            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight mt-5"
+                        <BlurText
+                            text="Create Your Blogs"
+                            delay={200}
+                            animateBy="words"
+                            direction="top"
+                            onAnimationComplete={handleAnimationComplete}
+                            className="whitespace-nowrap  text-3xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight mt-5 text-white ml-14 sm:ml-20"
                             style={{
                                 background: 'linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%)',
                                 WebkitBackgroundClip: 'text',
@@ -167,11 +176,7 @@ const Intro = () => {
                                 backgroundClip: 'text',
                                 filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.3))'
                             }}
-                        >
-                            Create Your Blogs
-                        </motion.h1>
-                  
-
+                        />
                         <motion.div
                             className="flex items-center justify-center gap-3 text-white text-2xl sm:text-3xl md:text-4xl font-semibold"
                             variants={itemVariants}
