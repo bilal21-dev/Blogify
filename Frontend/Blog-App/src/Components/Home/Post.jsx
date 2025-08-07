@@ -384,7 +384,7 @@ const Post = () => {
   };
 
   return (
-    <div className="profile-page min-h-screen bg-gradient-to-br from-slate-900 via-blue-600 to-purple-700">
+    <div className="profile-page min-h-screen bg-gradient-to-br from-slate-100 via-blue-100 to-purple-400">
       {showAlert && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
           <Alert

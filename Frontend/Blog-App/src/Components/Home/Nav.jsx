@@ -129,9 +129,9 @@ const Navbar = () => {
                             >
                                 <div className="flex items-center cursor-pointer group p-1 rounded-2xl hover:bg-white/10 transition-all duration-300">
                                     <div className="relative">
-                                        <img 
-                                            src={profilePic} 
-                                            className="h-10 w-10 rounded-2xl object-cover ring-2 ring-white/20 group-hover:ring-blue-400/50 transition-all duration-300 shadow-lg" 
+                                        <img
+                                            src={profilePic}
+                                            className="h-10 w-10 rounded-2xl object-cover ring-2 ring-white/20 group-hover:ring-blue-400/50 transition-all duration-300 shadow-lg"
                                             alt="Profile"
                                         />
                                         <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-slate-900 shadow-lg"></div>
@@ -180,9 +180,9 @@ const Navbar = () => {
                             >
                                 <div className="flex items-center space-x-3 cursor-pointer group p-2 rounded-2xl hover:bg-white/10 transition-all duration-300">
                                     <div className="relative">
-                                        <img 
-                                            src={profilePic} 
-                                            className="h-12 w-12 rounded-2xl object-cover ring-2 ring-white/20 group-hover:ring-blue-400/50 transition-all duration-300 shadow-lg" 
+                                        <img
+                                            src={profilePic}
+                                            className="h-12 w-12 rounded-2xl object-cover ring-2 ring-white/20 group-hover:ring-blue-400/50 transition-all duration-300 shadow-lg"
                                             alt="Profile"
                                         />
                                         <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 shadow-lg"></div>
@@ -227,7 +227,7 @@ const Navbar = () => {
                 </div>
 
                 {/* Mobile Menu */}
-                {isMobileMenuOpen && (
+                {/* {isMobileMenuOpen && (
                     <div className="fixed top-20 left-0 w-full bg-gradient-to-br from-slate-900/98 via-blue-900/98 to-slate-900/98 backdrop-blur-xl md:hidden z-[999] border-t border-white/10 shadow-2xl">
                         <div className="flex flex-col items-center space-y-6 py-8 animate-fade-in">
                             {navItems.map((item) => (
@@ -245,7 +245,7 @@ const Navbar = () => {
                                 </div>
                             ))}
 
-                            {/* Login / Signup Buttons in Mobile Menu */}
+                            
                             {!profile && (
                                 <div className="flex gap-2 pt-4">
                                     <Link
@@ -267,6 +267,64 @@ const Navbar = () => {
                                         className={`px-5 py-2 text-base font-semibold rounded-xl transition-all duration-300 ${curForm === 'login'
                                             ? 'text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg ring-2 ring-blue-400/30 transform scale-105'
                                             : 'text-white/80 hover:text-white hover:bg-white/10'
+                                            }`}
+                                        onClick={() => {
+                                            setForm('login');
+                                            setActiveKey(null);
+                                            setIsMobileMenuOpen(false);
+                                        }}
+                                    >
+                                        Login
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )} */}
+                {isMobileMenuOpen && (
+                    <div className="fixed top-20 left-0 w-full bg-gradient-to-br from-slate-900/98 via-blue-900/98 to-slate-900/98 backdrop-blur-xl md:hidden z-[1000] border-t border-white/10 shadow-2xl">
+                        <div className="flex flex-col items-center space-y-6 py-8 animate-fade-in">
+                            {navItems.map((item, index) => (
+                                <div
+                                    key={item.key}
+                                    className="relative group transform transition-all duration-500 opacity-0 translate-y-4 animate-slide-in"
+                                    style={{ animationDelay: `${index * 0.1}s` }}
+                                >
+                                    {React.cloneElement(item.label, {
+                                        className: `text-xl font-medium transition-all duration-300 hover:scale-110 px-6 py-3 rounded-xl ${activeKey === item.key
+                                                ? 'text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-xl ring-2 ring-blue-400/30 transform scale-105'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                            }`,
+                                        onClick: () => {
+                                            handleMenuClick({ key: item.key });
+                                            setIsMobileMenuOpen(false);
+                                        },
+                                    })}
+                                </div>
+                            ))}
+
+                            {/* Login / Signup Buttons in Mobile Menu */}
+                            {!profile && (
+                                <div className="flex gap-2 pt-4">
+                                    <Link
+                                        to="/signup"
+                                        className={`px-5 py-2 text-base font-semibold rounded-xl transition-all duration-300 ${curForm === 'signup'
+                                                ? 'text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg ring-2 ring-blue-400/30 transform scale-105'
+                                                : 'text-white/80 hover:text-white hover:bg-white/10'
+                                            }`}
+                                        onClick={() => {
+                                            setForm('signup');
+                                            setActiveKey(null);
+                                            setIsMobileMenuOpen(false);
+                                        }}
+                                    >
+                                        Sign Up
+                                    </Link>
+                                    <Link
+                                        to="/login"
+                                        className={`px-5 py-2 text-base font-semibold rounded-xl transition-all duration-300 ${curForm === 'login'
+                                                ? 'text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg ring-2 ring-blue-400/30 transform scale-105'
+                                                : 'text-white/80 hover:text-white hover:bg-white/10'
                                             }`}
                                         onClick={() => {
                                             setForm('login');

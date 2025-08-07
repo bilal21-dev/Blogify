@@ -285,7 +285,7 @@ const ProfilePage = () => {
         animation: 'flip-in-hor-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
     }
     return (
-        <div className="profile-page min-h-screen bg-gradient-to-br from-slate-500 via-blue-200 to-purple-400">
+        <div className="profile-page min-h-screen bg-gradient-to-br from-slate-100 via-blue-100 to-purple-400">
             <ProfileHeader />
             
             {/* Premium Section Header */}
