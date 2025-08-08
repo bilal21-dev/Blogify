@@ -104,7 +104,7 @@ const PremiumFAQ = () => {
                   </div>
                   <ChevronDown 
                     className={`w-6 h-6 text-black/60 transition-all duration-300 ${
-                      activeItems.includes(item.id) ? 'rotate-180 text-purple-400' : 'group-hover:text-white'
+                      activeItems.includes(item.id) ? 'rotate-180 text-purple-400' : 'group-hover:text-purple-600'
                     }`}
                   />
                 </button>
@@ -122,7 +122,7 @@ const PremiumFAQ = () => {
                     {item.answer.steps ? (
                       <ol className="space-y-3">
                         {item.answer.steps.map((step, stepIndex) => (
-                          <li key={stepIndex} className="flex items-start gap-3 text-white/70">
+                          <li key={stepIndex} className="flex items-start gap-3 text-black/70">
                             <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold mt-0.5 flex-shrink-0">
                               {stepIndex + 1}
                             </div>
@@ -131,7 +131,7 @@ const PremiumFAQ = () => {
                         ))}
                       </ol>
                     ) : (
-                      <p className="text-white/70 leading-relaxed">{item.answer.text}</p>
+                      <p className="text-black/70 leading-relaxed">{item.answer.text}</p>
                     )}
                   </div>
                 </div>
