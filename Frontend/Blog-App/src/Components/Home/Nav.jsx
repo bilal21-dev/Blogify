@@ -130,9 +130,12 @@ const Navbar = () => {
                                 <div className="flex items-center cursor-pointer group p-1 rounded-2xl hover:bg-white/10 transition-all duration-300">
                                     <div className="relative">
                                         <img
-                                            src={profilePic}
+                                            src={profilePic || 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png'}
                                             className="h-10 w-10 rounded-2xl object-cover ring-2 ring-white/20 group-hover:ring-blue-400/50 transition-all duration-300 shadow-lg"
                                             alt="Profile"
+                                            onError={(e) => {
+                                                e.target.src = 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png';
+                                            }}
                                         />
                                         <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-slate-900 shadow-lg"></div>
                                     </div>
@@ -181,9 +184,12 @@ const Navbar = () => {
                                 <div className="flex items-center space-x-3 cursor-pointer group p-2 rounded-2xl hover:bg-white/10 transition-all duration-300">
                                     <div className="relative">
                                         <img
-                                            src={profilePic}
+                                            src={profilePic || 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png'}
                                             className="h-12 w-12 rounded-2xl object-cover ring-2 ring-white/20 group-hover:ring-blue-400/50 transition-all duration-300 shadow-lg"
                                             alt="Profile"
+                                            onError={(e) => {
+                                                e.target.src = 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png';
+                                            }}
                                         />
                                         <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 shadow-lg"></div>
                                     </div>

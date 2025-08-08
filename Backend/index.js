@@ -155,7 +155,7 @@ app.post("/home", upload.single("image"), async (req, res) => {
 });
 
 app.get("/home", async (req, res) => {
-    let blogs = await Blog.find()
+    let blogs = await Blog.find().populate('author', 'name email')
     if (blogs.length > 0) {
         res.send(blogs)
     }
@@ -167,10 +167,16 @@ app.get("/home", async (req, res) => {
 app.get('/profile/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const user = await User.findById(id).populate('sharedPosts'); // Populate shared posts
+        const user = await User.findById(id).populate({
+            path: 'sharedPosts',
+            populate: {
+                path: 'author',
+                select: 'name email'
+            }
+        }); // Populate shared posts with author info
         if (!user) return res.status(404).json({ error: "User not found" });
 
-        const myBlogs = await Blog.find({ author: id }); // Fetch user's own blogs
+        const myBlogs = await Blog.find({ author: id }).populate('author', 'name email'); // Fetch user's own blogs with author info
         res.status(200).json({ myBlogs, sharedPosts: user.sharedPosts });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -242,7 +248,7 @@ app.post('/like/:postId', async (req, res) => {
     const { userId } = req.body;
 
     try {
-        const blog = await Blog.findById(postId);
+        const blog = await Blog.findById(postId).populate('author', 'name email');
 
         if (!blog) return res.status(404).send({ message: "Blog not found" });
 
@@ -330,7 +336,7 @@ app.get('/profile-pic/:userId', async (req, res) => {
         res.status(200).json({
             message: 'User retrieved successfully',
             user: {
-                profilePic: user.profilePic, // Path to profile picture
+                profilePic: user.profilePic && user.profilePic.trim() !== '' ? user.profilePic : null, // Only return profilePic if it exists and is not empty
             },
         });
     } catch (error) {

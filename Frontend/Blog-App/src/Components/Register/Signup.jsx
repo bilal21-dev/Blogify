@@ -52,7 +52,7 @@ const SignUp = () => {
       };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-200 via-blue-400 to-purple-500 relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-200 via-blue-200 to-purple-200 relative overflow-hidden">
             {/* Animated background elements */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-600/20 via-transparent to-transparent"></div>
             <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
@@ -65,16 +65,16 @@ const SignUp = () => {
                 
                 <div className="relative z-10">
                     <div className="text-center mb-8">
-                        <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-2">
+                        <h2 className="text-3xl font-bold bg-gradient-to-r from-black to-slate-500 bg-clip-text text-transparent mb-2">
                             Create Account
                         </h2>
-                        <p className="text-gray-300/80 text-sm">Join us and start your journey</p>
+                        <p className="text-black-300/80 text-sm">Join us and start your journey</p>
                     </div>
 
                     <form onSubmit={collectData} className="space-y-6">
                         <div className="space-y-4">
                             <div className="group">
-                                <label htmlFor="username" className="block text-sm font-medium text-gray-200 mb-2 group-focus-within:text-purple-300 transition-colors">
+                                <label htmlFor="username" className="block text-sm font-medium text-gray-800 mb-2 group-focus-within:text-purple-900 transition-colors">
                                     Username
                                 </label>
                                 <div className="relative">
@@ -82,7 +82,7 @@ const SignUp = () => {
                                         type="text"
                                         value={name}
                                         placeholder="Enter your username"
-                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all duration-300 hover:bg-white/15"
+                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-black placeholder-gray-400 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all duration-300 hover:bg-white/15"
                                         onChange={(e) => setName(e.target.value)}
                                     />
                                     <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-purple-500/0 group-focus-within:from-purple-500/10 group-focus-within:via-purple-500/5 group-focus-within:to-purple-500/10 transition-all duration-300 pointer-events-none"></div>
@@ -90,7 +90,7 @@ const SignUp = () => {
                             </div>
 
                             <div className="group">
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-2 group-focus-within:text-purple-300 transition-colors">
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-800 mb-2 group-focus-within:text-purple-900 transition-colors">
                                     Email Address
                                 </label>
                                 <div className="relative">
@@ -98,7 +98,7 @@ const SignUp = () => {
                                         type="email"
                                         value={email}
                                         placeholder="Enter your email"
-                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all duration-300 hover:bg-white/15"
+                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-black placeholder-gray-400 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all duration-300 hover:bg-white/15"
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
                                     <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-purple-500/0 group-focus-within:from-purple-500/10 group-focus-within:via-purple-500/5 group-focus-within:to-purple-500/10 transition-all duration-300 pointer-events-none"></div>
@@ -106,7 +106,7 @@ const SignUp = () => {
                             </div>
 
                             <div className="group">
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-200 mb-2 group-focus-within:text-purple-300 transition-colors">
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-800 mb-2 group-focus-within:text-purple-900 transition-colors">
                                     Password
                                 </label>
                                 <div className="relative">
@@ -114,7 +114,7 @@ const SignUp = () => {
                                         type="password"
                                         value={password}
                                         placeholder="Enter your password"
-                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all duration-300 hover:bg-white/15"
+                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-black placeholder-gray-400 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all duration-300 hover:bg-white/15"
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
                                     <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-purple-500/0 group-focus-within:from-purple-500/10 group-focus-within:via-purple-500/5 group-focus-within:to-purple-500/10 transition-all duration-300 pointer-events-none"></div>
@@ -122,7 +122,7 @@ const SignUp = () => {
                             </div>
 
                             <div className="group">
-                                <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-200 mb-2 group-focus-within:text-purple-300 transition-colors">
+                                <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-800 mb-2 group-focus-within:text-purple-900 transition-colors">
                                     Confirm Password
                                 </label>
                                 <div className="relative">
@@ -130,7 +130,7 @@ const SignUp = () => {
                                         type="password"
                                         value={password}
                                         placeholder="Confirm your password"
-                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all duration-300 hover:bg-white/15"
+                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-black placeholder-gray-400 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all duration-300 hover:bg-white/15"
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
                                     <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-purple-500/0 group-focus-within:from-purple-500/10 group-focus-within:via-purple-500/5 group-focus-within:to-purple-500/10 transition-all duration-300 pointer-events-none"></div>
@@ -149,11 +149,11 @@ const SignUp = () => {
                     </form>
 
                     <div className="mt-8 text-center">
-                        <p className="text-gray-300/80 text-sm">
+                        <p className="text-black-300/80 text-sm">
                             Already have an account?{" "}
                             <Link 
                                 to="/login" 
-                                className="text-slate-800 hover:text-purple-300 font-medium hover:underline transition-colors duration-200"
+                                className="text-pink-800 hover:text-purple-300 font-medium hover:underline transition-colors duration-200"
                             >
                                 Sign In
                             </Link>

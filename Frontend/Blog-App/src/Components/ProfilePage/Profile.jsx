@@ -454,7 +454,7 @@ const ProfilePage = () => {
                                             {/* Shared Badge */}
                                             <div className="absolute top-4 left-4 z-20">
                                                 <div className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                                                    Posted by {blog.author}
+                                                {blog.author?.name || 'Unknown Author'}
                                                 </div>
                                             </div>
 
@@ -519,7 +519,7 @@ const ProfilePage = () => {
                                                 <div className="space-y-4">
                                                     <div className="border-l-4 border-purple-500 pl-4">
                                                         <h3 className="text-2xl font-bold text-gray-800 mb-2">{blog.title}</h3>
-                                                        <p className="text-purple-600 font-medium">Shared by {blog.author}</p>
+                                                        <p className="text-purple-600 font-medium">Shared by {blog.author?.name || 'Unknown Author'}</p>
                                                         <p className="text-gray-600 italic mt-1">{blog.description}</p>
                                                     </div>
                                                     

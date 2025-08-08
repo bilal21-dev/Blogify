@@ -370,12 +370,14 @@ const ProfileHeader = () => {
         try {
             // Check if the profile picture is already in local storage
             const storedProfilePic = localStorage.getItem('profilePic');
-            if (storedProfilePic) {
+            const defaultProfilePic = 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png';
+            
+            if (storedProfilePic && storedProfilePic.trim() !== '' && storedProfilePic !== defaultProfilePic) {
                 setProfilePic(storedProfilePic);
             } else {
                 // Fetch user data from backend if not in local storage
                 const response = await axios.get(`http://localhost:5000/profile-pic/${user._id}`);
-                if (response.data.user) {
+                if (response.data.user && response.data.user.profilePic && response.data.user.profilePic.trim() !== '') {
                     const { profilePic } = response.data.user;
 
                     const profilePicUrl = `http://localhost:5000/${profilePic}`;
@@ -384,12 +386,17 @@ const ProfileHeader = () => {
                     // Save profile picture in local storage
                     localStorage.setItem('profilePic', profilePicUrl);
                 } else {
-                    message.error('Failed to fetch user details.');
+                    // No profile picture found, use the default placeholder
+                    setProfilePic(defaultProfilePic);
+                    localStorage.setItem('profilePic', defaultProfilePic);
                 }
             }
         } catch (error) {
             console.error('Error fetching profile:', error);
-            message.error('An error occurred while fetching user details.');
+            // Set default profile picture on error
+            const defaultProfilePic = 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png';
+            setProfilePic(defaultProfilePic);
+            localStorage.setItem('profilePic', defaultProfilePic);
         }
     };
 
@@ -517,9 +524,12 @@ const ProfileHeader = () => {
                         <div className="flex justify-center">
                             <div className="relative">
                                 <img
-                                    src={profilePic || 'default-image-url.png'}
+                                    src={profilePic || 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png'}
                                     alt="Current Profile"
                                     className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
+                                    onError={(e) => {
+                                        e.target.src = 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png';
+                                    }}
                                 />
                                 <div className="absolute inset-0 bg-black/20 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
                                     <FaCamera className="text-white text-xl" />
@@ -556,9 +566,12 @@ const ProfileHeader = () => {
                             <div className="relative group">
                                 <div className="w-40 h-40 rounded-3xl overflow-hidden ring-4 ring-white/30 shadow-2xl group-hover:ring-white/50 transition-all duration-300">
                                     <img
-                                        src={profilePic || 'default-image-url.png'}
+                                        src={profilePic || 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png'}
                                         alt="Profile"
                                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                        onError={(e) => {
+                                            e.target.src = 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png';
+                                        }}
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                 </div>

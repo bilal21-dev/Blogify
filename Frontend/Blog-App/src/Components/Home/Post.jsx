@@ -460,7 +460,7 @@ const Post = () => {
                         <div className="absolute top-4 left-4 z-20">
                           <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg flex items-center gap-2">
                             <FaUser className="text-xs" />
-                            {blog.author}
+                             {blog.author?.name || 'Unknown Author'}
                           </div>
                         </div>
 
@@ -534,7 +534,7 @@ const Post = () => {
                           <div className="space-y-4">
                             <div className="border-l-4 border-blue-500 pl-4">
                               <h3 className="text-2xl font-bold text-gray-800 mb-2">{blog.title}</h3>
-                              <p className="text-blue-600 font-medium">By {blog.author}</p>
+                              <p className="text-blue-600 font-medium">By {blog.author?.name || 'Unknown Author'}</p>
                               <p className="text-gray-600 italic mt-1">{blog.description}</p>
                             </div>
                             

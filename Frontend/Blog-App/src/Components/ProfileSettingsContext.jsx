@@ -13,8 +13,10 @@ export const ProfileSettingsProvider = ({ children }) => {
     const [tempEmail, setTempEmail] = useState(''); // Temporary email for editing
     const [tempBio, setTempBio] = useState("");
     const [bio, setBio] = useState("");
+    const defaultProfilePic = 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png';
+    const storedProfilePic = localStorage.getItem("profilePic");
     const [profilePic, setProfilePic] = useState(
-        localStorage.getItem("profilePic") || 'https://via.placeholder.com/100'
+        (storedProfilePic && storedProfilePic.trim() !== '') ? storedProfilePic : defaultProfilePic
     );
     const [password, setPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
