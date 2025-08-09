@@ -3,6 +3,7 @@ const cors = require("cors");
 require('./db/config');
 const User = require('./db/User');
 const Blog = require('./db/Blog');
+const Comment = require('./db/Comment');
 const multer = require("multer");
 const path = require("path");
 const app = express();
@@ -155,12 +156,26 @@ app.post("/home", upload.single("image"), async (req, res) => {
 });
 
 app.get("/home", async (req, res) => {
-    let blogs = await Blog.find().populate('author', 'name email')
-    if (blogs.length > 0) {
-        res.send(blogs)
-    }
-    else {
-        res.send("no result");
+    try {
+        let blogs = await Blog.find().populate('author', 'name email');
+        if (blogs.length > 0) {
+            // Add comment count to each blog for frontend display
+            const blogsWithCommentCount = await Promise.all(
+                blogs.map(async (blog) => {
+                    const commentCount = await Comment.countDocuments({ blogId: blog._id });
+                    return {
+                        ...blog.toObject(),
+                        commentCount
+                    };
+                })
+            );
+            res.send(blogsWithCommentCount);
+        } else {
+            res.send("no result");
+        }
+    } catch (error) {
+        console.error("Error fetching blogs:", error);
+        res.status(500).send({ error: "Failed to fetch blogs" });
     }
 })
 
@@ -378,6 +393,159 @@ app.put('/password/:id', async (req, res) => {
         res.status(500).send({ error: 'Internal server error' });
     }
 });
+
+
+// ===== COMMENT ENDPOINTS =====
+
+// Add a new comment to a blog
+app.post("/api/comments", async (req, res) => {
+    try {
+        const { blogId, userId, content } = req.body;
+
+        // Validate input
+        if (!blogId || !userId || !content) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
+
+        if (content.trim().length === 0) {
+            return res.status(400).json({ error: "Comment cannot be empty" });
+        }
+
+        if (content.length > 1000) {
+            return res.status(400).json({ error: "Comment is too long (max 1000 characters)" });
+        }
+
+        // Check if blog exists
+        const blog = await Blog.findById(blogId);
+        if (!blog) {
+            return res.status(404).json({ error: "Blog not found" });
+        }
+
+        // Check if user exists
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // Create the comment
+        const comment = new Comment({
+            blogId,
+            userId,
+            content: content.trim()
+        });
+
+        const savedComment = await comment.save();
+
+        // Update the blog's comment count
+        await Blog.findByIdAndUpdate(blogId, {
+            $inc: { commentCount: 1 }
+        });
+
+        // Populate user info for the response
+        const populatedComment = await Comment.findById(savedComment._id)
+            .populate('userId', 'name email profilePic');
+
+        res.status(201).json({
+            success: true,
+            comment: populatedComment,
+            message: "Comment added successfully"
+        });
+
+    } catch (error) {
+        console.error("Error adding comment:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Get all comments for a specific blog
+app.get("/api/comments/:blogId", async (req, res) => {
+    try {
+        const { blogId } = req.params;
+        const { page = 1, limit = 20 } = req.query;
+
+        // Validate blog ID
+        if (!blogId) {
+            return res.status(400).json({ error: "Blog ID is required" });
+        }
+
+        // Check if blog exists
+        const blog = await Blog.findById(blogId);
+        if (!blog) {
+            return res.status(404).json({ error: "Blog not found" });
+        }
+
+        // Calculate pagination
+        const skip = (page - 1) * limit;
+
+        // Get comments with user info, sorted by newest first
+        const comments = await Comment.find({ blogId })
+            .populate('userId', 'name email profilePic')
+            .sort({ createdAt: -1 })
+            .limit(parseInt(limit))
+            .skip(skip);
+
+        // Get total count for pagination
+        const totalComments = await Comment.countDocuments({ blogId });
+
+        res.json({
+            success: true,
+            comments,
+            pagination: {
+                currentPage: parseInt(page),
+                totalPages: Math.ceil(totalComments / limit),
+                totalComments,
+                hasMore: totalComments > skip + comments.length
+            }
+        });
+
+    } catch (error) {
+        console.error("Error fetching comments:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Delete a comment (only by comment owner or admin)
+app.delete("/api/comments/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { userId } = req.body;
+
+        // Validate input
+        if (!userId) {
+            return res.status(400).json({ error: "User ID is required" });
+        }
+
+        // Find the comment
+        const comment = await Comment.findById(id);
+        if (!comment) {
+            return res.status(404).json({ error: "Comment not found" });
+        }
+
+        // Check if user is the comment owner
+        if (comment.userId.toString() !== userId) {
+            return res.status(403).json({ error: "You can only delete your own comments" });
+        }
+
+        // Delete the comment
+        await Comment.findByIdAndDelete(id);
+
+        // Update the blog's comment count
+        await Blog.findByIdAndUpdate(comment.blogId, {
+            $inc: { commentCount: -1 }
+        });
+
+        res.json({
+            success: true,
+            message: "Comment deleted successfully"
+        });
+
+    } catch (error) {
+        console.error("Error deleting comment:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// ===== END COMMENT ENDPOINTS =====
 
 
 // Start server

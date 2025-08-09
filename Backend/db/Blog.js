@@ -5,7 +5,8 @@ const blogSchema = new mongoose.Schema({
     content: { type: String, required: true },       // Detailed blog content
     image: { type: String, default: null },         // Image URL or file path
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }]
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
+    commentCount: { type: Number, default: 0 }       // Cache comment count for performance
 });
 
 module.exports = mongoose.model("blogs", blogSchema);

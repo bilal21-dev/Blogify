@@ -262,6 +262,7 @@ import { useState, useEffect } from "react";
 import { FaRegHeart, FaHeart, FaRegComment, FaShareSquare, FaSync, FaUser } from "react-icons/fa";
 import { IoCreate } from "react-icons/io5";
 import PopUp from "./PopUp";
+import CommentModal from "./CommentModal";
 import { useAuth } from '../AuthContext';
 import axios from "axios";
 import { Alert } from 'antd';
@@ -269,6 +270,7 @@ import NewsTicker from "./NewsTicker.jsx"
 
 const Post = () => {
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
+  const [commentModal, setCommentModal] = useState({ isOpen: false, blog: null });
   const { register, blogs, setBlogs, setMyblogs } = useAuth()
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -350,6 +352,18 @@ const Post = () => {
       console.error(error);
       alert("Failed to share post");
     }
+  };
+
+  const handleCommentClick = (blog) => {
+    if (!register) {
+      setShowAlert(true);
+      return;
+    }
+    setCommentModal({ isOpen: true, blog });
+  };
+
+  const closeCommentModal = () => {
+    setCommentModal({ isOpen: false, blog: null });
   };
 
   const handleLike = async (postId, index) => {
@@ -500,10 +514,16 @@ const Post = () => {
                                 {isLiked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
                                 <span className="text-sm">{blog.likes.length}</span>
                               </button>
-                              <div className="flex items-center gap-2 text-gray-500 hover:text-blue-500 transition-colors cursor-pointer">
+                              <button 
+                                onClick={() => handleCommentClick(blog)}
+                                className="flex items-center gap-2 text-gray-500 hover:text-blue-500 transition-colors cursor-pointer"
+                                title="View comments"
+                              >
                                 <FaRegComment />
-                                <span className="text-sm">Comment</span>
-                              </div>
+                                <span className="text-sm">
+                                  {blog.commentCount || 0}
+                                </span>
+                              </button>
                             </div>
                             <button 
                               className="text-gray-500 hover:text-green-500 transition-colors cursor-pointer"
@@ -608,6 +628,13 @@ const Post = () => {
 
       {/* Conditionally Render the PopUp */}
       {isPopUpVisible && <PopUp closePopUp={handleClosePopUp} addBlog={addBlog} />}
+
+      {/* Comment Modal */}
+      <CommentModal
+        isOpen={commentModal.isOpen}
+        onClose={closeCommentModal}
+        blog={commentModal.blog}
+      />
 
       {/* Custom Styles */}
       <style jsx global>{`

@@ -310,7 +310,7 @@ const ProfilePage = () => {
                     {myblogs.map((blog, index) => {
                         const cardKey = `myblogs-${index}`;
                         return (
-                            <div key={cardKey} className="group perspective-1000 w-full h-[420px]">
+                            <div key={cardKey} className="group perspective-1000 w-full h-[380px]">
                                 <div className={`relative w-full h-full transition-all duration-700 transform-style-3d ${flippedCards[cardKey] ? 'rotate-y-180' : ''}`}>
                                     {/* Front of Card */}
                                     <div className="absolute w-full h-full backface-hidden">
@@ -368,7 +368,7 @@ const ProfilePage = () => {
                                                 
                                                 {/* Engagement Bar */}
                                                 <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                                                    <div className="flex gap-4">
+                                                    {/* <div className="flex gap-4">
                                                         <div className="flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors cursor-pointer">
                                                             <FaRegHeart />
                                                             <span className="text-sm">0</span>
@@ -378,7 +378,7 @@ const ProfilePage = () => {
                                                             <span className="text-sm">0</span>
                                                         </div>
                                                     </div>
-                                                    {/* <div className="text-gray-500 hover:text-green-500 transition-colors cursor-pointer">
+                                                    <div className="text-gray-500 hover:text-green-500 transition-colors cursor-pointer">
                                                         <FaShareSquare />
                                                     </div> */}
                                                 </div>
@@ -430,7 +430,7 @@ const ProfilePage = () => {
                     {sharedPosts.map((blog, index) => {
                         const cardKey = `shared-${index}`;
                         return (
-                            <div key={cardKey} className="group perspective-1000 w-full h-[420px]">
+                            <div key={cardKey} className="group perspective-1000 w-full h-[380px]">
                                 <div className={`relative w-full h-full transition-all duration-700 transform-style-3d ${flippedCards[cardKey] ? 'rotate-y-180' : ''}`}>
                                     {/* Front of Card */}
                                     <div className="absolute w-full h-full backface-hidden">
@@ -485,7 +485,7 @@ const ProfilePage = () => {
                                                 
                                                 {/* Engagement Bar */}
                                                 <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                                                    <div className="flex gap-4">
+                                                    {/* <div className="flex gap-4">
                                                         <div className="flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors cursor-pointer">
                                                             <FaRegHeart />
                                                             <span className="text-sm">0</span>
@@ -495,7 +495,7 @@ const ProfilePage = () => {
                                                             <span className="text-sm">0</span>
                                                         </div>
                                                     </div>
-                                                    {/* <div className="text-gray-500 hover:text-green-500 transition-colors cursor-pointer">
+                                                    <div className="text-gray-500 hover:text-green-500 transition-colors cursor-pointer">
                                                         <FaShareSquare />
                                                     </div> */}
                                                 </div>
