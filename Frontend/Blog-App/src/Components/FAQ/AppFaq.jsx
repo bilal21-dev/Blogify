@@ -54,7 +54,7 @@ const PremiumFAQ = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-200 via-blue-200 to-purple-400 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-200 via-blue-200 to-purple-400 relative overflow-hidden z-[-999]">
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
