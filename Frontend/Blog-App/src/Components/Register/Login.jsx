@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 import { useAuth } from "../AuthContext";
+import { useLoading } from "../LoadingContext";
+import { LoadingButton } from "../LoadingSpinner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setProfile, setRegister } = useAuth();
+  const { showLoading, hideLoading } = useLoading();
+  const [loginLoading, setLoginLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoginLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/login', {
+      const response = await apiClient.post('/login', {
         email,
         password
+      }, {
+        loadingMessage: "Logging you in..."
       });
   
       const userData = response.data;
@@ -46,6 +53,8 @@ const Login = () => {
       } else {
         alert("Network error. Please check your connection.");
       }
+    } finally {
+      setLoginLoading(false);
     }
   };
 
@@ -125,14 +134,16 @@ const Login = () => {
               </a>
             </div>
 
-            <button
+            <LoadingButton
               type="submit"
+              loading={loginLoading}
               className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 px-6 rounded-xl font-semibold shadow-lg hover:shadow-purple-500/25 hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300 group"
+              loadingText="Signing In..."
             >
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
               <span className="relative z-10">Sign In</span>
-            </button>
+            </LoadingButton>
           </form>
 
           <div className="mt-8 text-center">

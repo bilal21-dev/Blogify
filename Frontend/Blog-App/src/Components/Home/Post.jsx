@@ -1,281 +1,25 @@
-// import { useState, useEffect } from "react";
-// import { FaRegHeart, FaHeart, FaRegComment, FaShareSquare, FaSync } from "react-icons/fa";
-// import { IoCreate } from "react-icons/io5";
-// import PopUp from "./PopUp";
-// import { useAuth } from '../AuthContext';
-// import axios from "axios";
-// import { Alert } from 'antd';
-// import NewsTicker from "./NewsTicker.jsx"
-
-
-// const Post = () => {
-//   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
-//   const { register, blogs, setBlogs, setMyblogs } = useAuth()
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [flippedCards, setFlippedCards] = useState({});
-//   const [showAlert, setShowAlert] = useState(false);
-
-//   const animation = {
-//     animation: 'flip-in-hor-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
-//   }
-//   const handleIconClick = () => {
-//     if (register) {
-//       setIsPopUpVisible(true);
-//     }
-//     else {
-//       setShowAlert(true);
-//     }
-//   };
-
-//   const handleClosePopUp = () => {
-//     setIsPopUpVisible(false);
-//   };
-
-//   const toggleCardFlip = (index) => {
-//     setFlippedCards(prev => ({
-//       ...prev,
-//       [index]: !prev[index]
-//     }));
-//   };
-
-//   useEffect(() => {
-//     fetchBlogs();
-//   }, []);
-
-//   const fetchBlogs = async () => {
-//     try {
-//       const response = await axios.get("http://localhost:5000/home");
-//       setBlogs(response.data);
-//       setLoading(false);
-//     } catch (err) {
-//       setError(err.message || "Failed to fetch blogs");
-//     }
-//   }
-
-//   const addBlog = (newBlog) => {
-//     if (newBlog.image) {
-//       const reader = new FileReader();
-//       reader.onload = () => {
-//         const base64Image = reader.result;
-//         const updatedBlog = { ...newBlog, image: base64Image };
-
-//         setMyblogs((prevBlogs) => {
-//           const updatedBlogs = [...prevBlogs, updatedBlog];
-//           localStorage.setItem("myblogs", JSON.stringify(updatedBlogs));
-//           return updatedBlogs;
-//         });
-//       };
-//       reader.readAsDataURL(newBlog.image);
-//     } else {
-//       setMyblogs((prevBlogs) => {
-//         const updatedBlogs = [...prevBlogs, newBlog];
-//         localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
-//         return updatedBlogs;
-//       });
-//     }
-//   };
-
-//   if (error) {
-//     return <p className="flex justify-center align-middle text-center">Error: {error}</p>;
-//   }
-//   const handleSharePost = async (postId) => {
-//     const userId = JSON.parse(localStorage.getItem("user"))._id; // Get logged-in user ID
-
-//     try {
-//       const response = await axios.post(`http://localhost:5000/profile/${userId}/share`, { postId });
-//       alert("Post shared successfully");
-//     } catch (error) {
-//       console.error(error);
-//       alert("Failed to share post");
-//     }
-//   };
-
-
-//   const handleLike = async (postId, index) => {
-//     const userId = JSON.parse(localStorage.getItem("user"))._id;
-
-//     const updatedBlogs = [...blogs];  // Always use immutability
-//     const blogToUpdate = updatedBlogs[index];
-
-//     // Check if the user already liked the post
-//     const isLiked = blogToUpdate.likes.includes(userId);
-
-//     // Toggle the like status
-//     if (isLiked) {
-//       blogToUpdate.likes = blogToUpdate.likes.filter(id => id !== userId);
-//     } else {
-//       blogToUpdate.likes.push(userId);
-//     }
-
-//     // Optimistically update the local state
-//     setBlogs(updatedBlogs);
-
-//     try {
-//       await axios.post(`http://localhost:5000/like/${postId}`, { userId });
-
-//       // Optionally, re-fetch the data from the backend
-//       fetchBlogs();
-//     } catch (err) {
-//       console.error(err);
-//       alert("Failed to like/unlike the post. Reverting the change.");
-//       fetchBlogs();  // Revert to the latest state from the backend
-//     }
-//   };
-
-
-//   return (
-//     <div className="min-h-screen flex flex-col items-center justify-center p-4 space-y-6 bg-slate-200">
-//       {showAlert && (
-//         <Alert
-//           message="Warning"
-//           description="You must register to perform this action."
-//           type="warning"
-//           showIcon
-//           closable
-//           onClose={() => setShowAlert(false)} // Hide alert when closed
-//         />
-//       )}
-//       <NewsTicker/>
-//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mt-3">
-//         {loading ? (
-//           <div className="absolute top-[250px] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-4">
-//             <div className="loader border-t-4 border-blue-600 rounded-full w-16 h-16 animate-spin"></div>
-//             <p className="ml-1 text-lg font-semibold text-black">Loading blogs...</p>
-//           </div>
-//         ) : Array.isArray(blogs) && blogs.length > 0 ? (
-//           blogs.map((blog, index) => {
-//             const loggedInUser = JSON.parse(localStorage.getItem("user"));
-//             const isLiked =
-//               loggedInUser &&
-//               Array.isArray(blog.likes) &&
-//               blog.likes.includes(loggedInUser._id);
-//             return (
-//               <div
-//                 key={index}
-//                 className="relative perspective-1000 w-full h-[460px]"
-//                 style={animation}
-//               >
-//                 <div
-//                   className={`absolute w-full h-full transition-transform duration-700 transform-style-3d ${flippedCards[index] ? 'rotate-y-180' : ''}`}
-//                 >
-//                   {/* Front of Card */}
-//                   <div className="absolute w-full h-full backface-hidden bg-white rounded-lg shadow-md shadow-black overflow-hidden border border-gray-200 ">
-//                     {/* Flip Button */}
-//                     <button
-//                       onClick={() => toggleCardFlip(index)}
-//                       className="absolute top-2 right-2 z-10 p-2 text-gray-600 hover:text-blue-500"
-//                     >
-//                       <FaSync />
-//                     </button>
-
-//                     {/* Caption Section */}
-//                     <p className="ml-4 text-[12px] my-1 text-gray-400 font-light">Posted by {blog.author}</p>
-//                     <div className="p-6 border-b">
-//                       <h2 className="text-xl font-extrabold text-blue-900">{blog.title}</h2>
-//                       <p className="text-sm text-gray-600 mt-2">{blog.description}</p>
-//                     </div>
-
-//                     {/* Image Section */}
-//                     {blog.image ? (
-//                       <img
-//                         src={`http://localhost:5000/${blog.image}`}
-//                         alt={blog.title}
-//                         className="w-full h-64 object-cover"
-//                       />
-//                     ) : (
-//                       <img
-//                         src="https://via.placeholder.com/400x250"
-//                         alt="Placeholder"
-//                         className="w-full h-64 object-cover"
-//                       />
-//                     )}
-
-//                     {/* Action Row */}
-//                     <div className="p-6 flex justify-around items-center border-t">
-//                       <button
-//                         onClick={() => handleLike(blog._id, index)}
-//                         className="flex items-center space-x-1 text-gray-600 hover:text-blue-500"
-//                       >
-//                         {isLiked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
-//                         <span>{blog.likes.length}</span>
-//                       </button>
-//                       <button className="flex items-center space-x-1 text-gray-600 hover:text-green-500">
-//                         <FaRegComment />
-//                         <span>Comment</span>
-//                       </button>
-//                       <button className="flex items-center space-x-1 text-gray-600 hover:text-purple-500" onClick={() => handleSharePost(blog._id)}>
-//                         <FaShareSquare />
-//                         <span>Share</span>
-//                       </button>
-//                     </div>
-//                   </div>
-
-//                   {/* Back of Card */}
-//                   <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-white rounded-lg shadow-md shadow-black overflow-hidden border border-gray-200">
-//                     {/* Flip Back Button */}
-//                     <button
-//                       onClick={() => toggleCardFlip(index)}
-//                       className="absolute top-2 right-2 z-10 p-2 text-gray-600 hover:text-blue-500"
-//                     >
-//                       <FaSync />
-//                     </button>
-
-//                     {/* Full Blog Content */}
-//                     <div className="p-6 h-full overflow-auto">
-//                       {blog.content && (
-//                         <div className="prose">
-//                           <h3 className="text-xl font-semibold mb-2">Content</h3>
-//                           <div dangerouslySetInnerHTML={{ __html: blog.content }} />;
-//                         </div>
-//                       )}
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             )
-//           })
-//         ) : (
-//           <div className=" relative ">
-//             <p className="absolute left-[560px] text-gray-500 text-xl">
-//               No blogs available
-//             </p>
-//           </div>
-//         )}
-//       </div>
-
-//       {/* Floating Icon to Trigger Pop-Up */}
-//       <IoCreate
-//         onClick={handleIconClick}
-//         className="fixed bottom-4 right-2 text-[60px] sm:text-[70px] text-blue-900 hover:text-blue-950 cursor-pointer"
-//       />
-
-//       {/* Conditionally Render the PopUp */}
-//       {isPopUpVisible && <PopUp closePopUp={handleClosePopUp} addBlog={addBlog} />}
-//     </div>
-//   );
-
-// }
-// export default Post;
-
 import { useState, useEffect } from "react";
 import { FaRegHeart, FaHeart, FaRegComment, FaShareSquare, FaSync, FaUser } from "react-icons/fa";
 import { IoCreate } from "react-icons/io5";
 import PopUp from "./PopUp";
 import CommentModal from "./CommentModal";
 import { useAuth } from '../AuthContext';
-import axios from "axios";
+import { useLoading } from '../LoadingContext';
+import apiClient from "../../utils/apiClient";
 import { Alert } from 'antd';
 import NewsTicker from "./NewsTicker.jsx"
+import { InlineLoader, LoadingButton } from "../LoadingSpinner";
 
 const Post = () => {
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const [commentModal, setCommentModal] = useState({ isOpen: false, blog: null });
   const { register, blogs, setBlogs, setMyblogs } = useAuth()
-  const [loading, setLoading] = useState(true);
+  const { showLoading, hideLoading } = useLoading();
+  const [localLoading, setLocalLoading] = useState(true);
   const [error, setError] = useState(null);
   const [flippedCards, setFlippedCards] = useState({});
   const [showAlert, setShowAlert] = useState(false);
+  const [actionLoading, setActionLoading] = useState({});
 
   const animation = {
     animation: 'flip-in-hor-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
@@ -307,11 +51,16 @@ const Post = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/home");
+      setLocalLoading(true);
+      const response = await apiClient.get("/home", {
+        skipLoading: false,
+        loadingMessage: "Loading latest posts..."
+      });
       setBlogs(response.data);
-      setLoading(false);
     } catch (err) {
       setError(err.message || "Failed to fetch blogs");
+    } finally {
+      setLocalLoading(false);
     }
   }
 
@@ -345,12 +94,17 @@ const Post = () => {
   const handleSharePost = async (postId) => {
     const userId = JSON.parse(localStorage.getItem("user"))._id; // Get logged-in user ID
 
+    setActionLoading(prev => ({ ...prev, [`share_${postId}`]: true }));
     try {
-      const response = await axios.post(`http://localhost:5000/profile/${userId}/share`, { postId });
+      const response = await apiClient.post(`/profile/${userId}/share`, { postId }, {
+        loadingMessage: "Sharing post..."
+      });
       alert("Post shared successfully");
     } catch (error) {
       console.error(error);
       alert("Failed to share post");
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`share_${postId}`]: false }));
     }
   };
 
@@ -385,8 +139,11 @@ const Post = () => {
     // Optimistically update the local state
     setBlogs(updatedBlogs);
 
+    setActionLoading(prev => ({ ...prev, [`like_${postId}`]: true }));
     try {
-      await axios.post(`http://localhost:5000/like/${postId}`, { userId });
+      await apiClient.post(`/like/${postId}`, { userId }, {
+        loadingMessage: isLiked ? "Unliking post..." : "Liking post..."
+      });
 
       // Optionally, re-fetch the data from the backend
       fetchBlogs();
@@ -394,6 +151,8 @@ const Post = () => {
       console.error(err);
       alert("Failed to like/unlike the post. Reverting the change.");
       fetchBlogs();  // Revert to the latest state from the backend
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`like_${postId}`]: false }));
     }
   };
 
@@ -412,9 +171,9 @@ const Post = () => {
           />
         </div>
       )}
-      
-      <NewsTicker/>
-      
+
+      <NewsTicker />
+
       {/* Premium Section Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="relative">
@@ -433,12 +192,9 @@ const Post = () => {
 
       {/* Premium Cards Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        {loading ? (
+        {localLoading ? (
           <div className="flex flex-col items-center justify-center min-h-[400px] gap-6">
-            <div className="relative">
-              <div className="w-20 h-20 border-4 border-blue-200 rounded-full animate-spin"></div>
-              <div className="w-20 h-20 border-4 border-blue-600 rounded-full animate-spin absolute top-0 left-0 border-t-transparent"></div>
-            </div>
+            <InlineLoader size="lg" />
             <div className="text-center">
               <p className="text-xl font-semibold text-slate-700 mb-2">Loading amazing content...</p>
               <p className="text-sm text-slate-500">Please wait while we fetch the latest blogs</p>
@@ -452,7 +208,7 @@ const Post = () => {
                 loggedInUser &&
                 Array.isArray(blog.likes) &&
                 blog.likes.includes(loggedInUser._id);
-              
+
               return (
                 <div key={index} className="group perspective-1000 w-full h-[420px]" style={animation}>
                   <div className={`relative w-full h-full transition-all duration-700 transform-style-3d ${flippedCards[index] ? 'rotate-y-180' : ''}`}>
@@ -474,7 +230,7 @@ const Post = () => {
                         <div className="absolute top-4 left-4 z-20">
                           <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg flex items-center gap-2">
                             <FaUser className="text-xs" />
-                             {blog.author?.name || 'Unknown Author'}
+                            {blog.author?.name || 'Unknown Author'}
                           </div>
                         </div>
 
@@ -502,19 +258,23 @@ const Post = () => {
                           <p className="text-gray-600 line-clamp-3 leading-relaxed">
                             {blog.description}
                           </p>
-                          
+
                           {/* Engagement Bar */}
                           <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                             <div className="flex gap-4">
-                              <button
+                              <LoadingButton
                                 onClick={() => handleLike(blog._id, index)}
-                                className="flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors cursor-pointer"
+                                loading={actionLoading[`like_${blog._id}`]}
+                                className="flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors cursor-pointer bg-transparent border-none p-0 h-auto"
                                 title={isLiked ? "Unlike post" : "Like post"}
+                                loadingText=""
                               >
-                                {isLiked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
-                                <span className="text-sm">{blog.likes.length}</span>
-                              </button>
-                              <button 
+                                <div className="flex items-center gap-2">
+                                  {isLiked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
+                                  <span className="text-sm">{blog.likes.length}</span>
+                                </div>
+                              </LoadingButton>
+                              <button
                                 onClick={() => handleCommentClick(blog)}
                                 className="flex items-center gap-2 text-gray-500 hover:text-blue-500 transition-colors cursor-pointer"
                                 title="View comments"
@@ -525,13 +285,15 @@ const Post = () => {
                                 </span>
                               </button>
                             </div>
-                            <button 
-                              className="text-gray-500 hover:text-green-500 transition-colors cursor-pointer"
+                            <LoadingButton
+                              loading={actionLoading[`share_${blog._id}`]}
+                              className="text-gray-500 hover:text-green-500 transition-colors cursor-pointer bg-transparent border-none p-0 h-auto"
                               onClick={() => handleSharePost(blog._id)}
                               title="Share post"
+                              loadingText=""
                             >
                               <FaShareSquare />
-                            </button>
+                            </LoadingButton>
                           </div>
                         </div>
                       </div>
@@ -557,16 +319,16 @@ const Post = () => {
                               <p className="text-blue-600 font-medium">By {blog.author?.name || 'Unknown Author'}</p>
                               <p className="text-gray-600 italic mt-1">{blog.description}</p>
                             </div>
-                            
+
                             {blog.content ? (
                               <div className="prose prose-blue max-w-none">
                                 <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
                                   <h4 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
                                     📖 Full Story
                                   </h4>
-                                  <div 
+                                  <div
                                     className="text-gray-700 leading-relaxed"
-                                    dangerouslySetInnerHTML={{ __html: blog.content }} 
+                                    dangerouslySetInnerHTML={{ __html: blog.content }}
                                   />
                                 </div>
                               </div>

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
@@ -9,8 +9,37 @@ export const useProfileSettings = () => {
 };
 
 export const ProfileSettingsProvider = ({ children }) => {
-    const [email, setEmail] = useState(''); // Current email displayed on profile
-    const [tempEmail, setTempEmail] = useState(''); // Temporary email for editing
+    let user = JSON.parse(localStorage.getItem("user"));
+    const initialEmail = user && user.email ? user.email : '';
+    const [email, setEmail] = useState(initialEmail); // Current email displayed on profile
+    const [tempEmail, setTempEmail] = useState(initialEmail); // Temporary email for editing
+
+    // Listen for user changes in localStorage and update email states
+    useEffect(() => {
+        const handleStorageChange = () => {
+            const updatedUser = JSON.parse(localStorage.getItem("user"));
+            const newEmail = updatedUser && updatedUser.email ? updatedUser.email : '';
+            setEmail(newEmail);
+            setTempEmail(newEmail);
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        // Also handle changes within the same tab (e.g., login function updates localStorage)
+        const interval = setInterval(() => {
+            const updatedUser = JSON.parse(localStorage.getItem("user"));
+            const newEmail = updatedUser && updatedUser.email ? updatedUser.email : '';
+            if (newEmail !== email) {
+                setEmail(newEmail);
+                setTempEmail(newEmail);
+            }
+        }, 500);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+            clearInterval(interval);
+        };
+    }, [email]);
     const [tempBio, setTempBio] = useState("");
     const [bio, setBio] = useState("");
     const defaultProfilePic = 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png';
@@ -21,13 +50,15 @@ export const ProfileSettingsProvider = ({ children }) => {
     const [password, setPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const params = useParams();
-    let user = JSON.parse(localStorage.getItem("user"));
     const getEmail = async () => {
         try {
             const result = await axios.get(`http://localhost:5000/update/${user._id}`);
             if (result) {
                 setEmail(result.data.email); // Set displayed email
                 setTempEmail(result.data.email); // Initialize temp email with current email
+                // Also update localStorage so next mount is instant
+                const updatedUser = { ...user, email: result.data.email };
+                localStorage.setItem('user', JSON.stringify(updatedUser));
             } else {
                 alert('Unable to fetch data');
             }

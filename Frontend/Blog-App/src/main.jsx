@@ -19,6 +19,8 @@ import Contact from "./Components/Contact/Contact.jsx";
 import About from "./Components/About.jsx/About.jsx";
 import AppFaq from "./Components/FAQ/AppFaq.jsx";
 import { ProfileSettingsProvider } from "./Components/ProfileSettingsContext.jsx";
+import { LoadingProvider } from "./Components/LoadingContext.jsx";
+import LoadingSpinner from "./Components/LoadingSpinner.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,11 +41,13 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ProfileSettingsProvider>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
-    </ProfileSettingsProvider>
-
+    <LoadingProvider>
+      <ProfileSettingsProvider>
+        <AuthProvider>
+          <RouterProvider router={router} />
+          <LoadingSpinner />
+        </AuthProvider>
+      </ProfileSettingsProvider>
+    </LoadingProvider>
   </StrictMode>
 );

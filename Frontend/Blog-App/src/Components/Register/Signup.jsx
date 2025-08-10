@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 import { useAuth } from "../AuthContext";
+import { useLoading } from "../LoadingContext";
+import { LoadingButton } from "../LoadingSpinner";
 
 const SignUp = () => {
     const [name, setName] = useState("");
@@ -9,14 +11,18 @@ const SignUp = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const { setProfile, setRegister } = useAuth();
+    const [signupLoading, setSignupLoading] = useState(false);
    
     const collectData = async (e) => {
         e.preventDefault();
+        setSignupLoading(true);
         try {
-          const response = await axios.post('http://localhost:5000/signup', {
+          const response = await apiClient.post('/signup', {
             name,
             email,
             password
+          }, {
+            loadingMessage: "Creating your account..."
           });
       
           const userData = response.data;
@@ -48,6 +54,8 @@ const SignUp = () => {
           } else {
             alert("Network error. Please check your connection.");
           }
+        } finally {
+          setSignupLoading(false);
         }
       };
 
@@ -138,14 +146,16 @@ const SignUp = () => {
                             </div>
                         </div>
 
-                        <button
+                        <LoadingButton
                             type="submit"
+                            loading={signupLoading}
                             className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 px-6 rounded-xl font-semibold shadow-lg hover:shadow-purple-500/25 hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300 group"
+                            loadingText="Creating Account..."
                         >
                             <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                             <span className="relative z-10">Create Account</span>
-                        </button>
+                        </LoadingButton>
                     </form>
 
                     <div className="mt-8 text-center">
