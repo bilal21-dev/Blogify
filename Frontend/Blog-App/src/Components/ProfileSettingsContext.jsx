@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { showSuccess, showError } from '../utils/toast';
 
 const ProfileSettingsContext = createContext();
 
@@ -60,7 +61,7 @@ export const ProfileSettingsProvider = ({ children }) => {
                 const updatedUser = { ...user, email: result.data.email };
                 localStorage.setItem('user', JSON.stringify(updatedUser));
             } else {
-                alert('Unable to fetch data');
+                showError('Unable to fetch data');
             }
         } catch (error) {
             console.error('Error fetching email:', error);
@@ -73,13 +74,13 @@ export const ProfileSettingsProvider = ({ children }) => {
                 const updatedUser = { ...user, email: tempEmail };
                 localStorage.setItem('user', JSON.stringify(updatedUser));
                 setEmail(tempEmail); // Update displayed email
-                alert('Email updated successfully!');
+                showSuccess('Email updated successfully!');
             } else {
-                alert('Failed to update email.');
+                showError('Failed to update email.');
             }
         } catch (error) {
             console.error('Error updating email:', error);
-            alert('Error updating email.');
+            showError('Error updating email.');
         }
     };
 
@@ -135,13 +136,13 @@ export const ProfileSettingsProvider = ({ children }) => {
             });
 
             if (response.data.success) {
-                alert('Password updated successfully!');
+                showSuccess('Password updated successfully!');
             }
         } catch (error) {
             // Handle specific backend error messages
             const errorMessage = error.response?.data?.error ||
                 "Password update failed. Check current password and try again.";
-            alert(errorMessage);
+            showError(errorMessage);
         }
     };
 

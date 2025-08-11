@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { MdCancel } from 'react-icons/md';
+import { showSuccess, showError } from '../../utils/toast';
 
 
 const PassPopup = ({ setPassPopup }) => {
@@ -21,21 +22,21 @@ const PassPopup = ({ setPassPopup }) => {
                     try {
                         const response = await axios.put(`http://localhost:5000/update/${params.id}`, { password: newPassword });
                         if (response.data) {
-                            alert('Password updated successfully!');
+                            showSuccess('Password updated successfully!');
                             setPassPopup(false);
                         } else {
-                            alert('Failed to update password.');
+                            showError('Failed to update password.');
                         }
                     } catch (error) {
                         console.error('Error updating password:', error);
-                        alert('Error updating password.');
+                        showError('Error updating password.');
                     }
                 }
                 else {
-                    alert("Your current password is incorrect")
+                    showError("Your current password is incorrect")
                 }
             } else {
-                alert('Unable to fetch data');
+                showError('Unable to fetch data');
             }
         } catch (error) {
             console.error('Error fetching email:', error);

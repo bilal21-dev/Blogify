@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { MdCancel } from 'react-icons/md';
+import { showSuccess, showError } from '../../utils/toast';
 
 const EmailPopup = ({ setEmailPopup }) => {
     const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ const EmailPopup = ({ setEmailPopup }) => {
       if (resut) {
         setEmail(resut.data.email);
       } else {
-        alert('Unable to fetch data');
+        showError('Unable to fetch data');
       }
     } catch (error) {
       console.error('Error fetching email:', error);
@@ -28,13 +29,13 @@ const EmailPopup = ({ setEmailPopup }) => {
     try {
       const response = await axios.put(`http://localhost:5000/update/${params.id}`, { email });
       if (response.data) {
-        alert('Email updated successfully!');
+        showSuccess('Email updated successfully!');
       } else {
-        alert('Failed to update email.');
+        showError('Failed to update email.');
       }
     } catch (error) {
       console.error('Error updating email:', error);
-      alert('Error updating email.');
+      showError('Error updating email.');
     }
   };
   const animation = {

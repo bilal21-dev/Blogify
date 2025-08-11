@@ -9,6 +9,7 @@ import apiClient from "../../utils/apiClient";
 import { Alert } from 'antd';
 import NewsTicker from "./NewsTicker.jsx"
 import { InlineLoader, LoadingButton } from "../LoadingSpinner";
+import { showSuccess, showError, showWarning } from '../../utils/toast';
 
 const Post = () => {
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
@@ -99,10 +100,10 @@ const Post = () => {
       const response = await apiClient.post(`/profile/${userId}/share`, { postId }, {
         loadingMessage: "Sharing post..."
       });
-      alert("Post shared successfully");
+      showSuccess("Post shared successfully");
     } catch (error) {
       console.error(error);
-      alert("Failed to share post");
+      showError("Failed to share post");
     } finally {
       setActionLoading(prev => ({ ...prev, [`share_${postId}`]: false }));
     }
@@ -149,7 +150,7 @@ const Post = () => {
       fetchBlogs();
     } catch (err) {
       console.error(err);
-      alert("Failed to like/unlike the post. Reverting the change.");
+      showError("Failed to like/unlike the post. Reverting the change.");
       fetchBlogs();  // Revert to the latest state from the backend
     } finally {
       setActionLoading(prev => ({ ...prev, [`like_${postId}`]: false }));

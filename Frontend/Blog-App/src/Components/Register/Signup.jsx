@@ -4,6 +4,7 @@ import apiClient from '../../utils/apiClient';
 import { useAuth } from "../AuthContext";
 import { useLoading } from "../LoadingContext";
 import { LoadingButton } from "../LoadingSpinner";
+import { showSuccess, showError } from '../../utils/toast';
 
 const SignUp = () => {
     const [name, setName] = useState("");
@@ -33,6 +34,7 @@ const SignUp = () => {
             localStorage.setItem("registry", true);
             setProfile(true);
             localStorage.setItem("profile", true);
+            showSuccess("Account created successfully! Welcome to the blog community.");
             navigate(`/profile/${userData._id}`);
           }
         } catch (error) {
@@ -40,19 +42,19 @@ const SignUp = () => {
             switch (error.response.status) {
               case 400:
                 if (error.response.data.result === "User already exists") {
-                  alert("Email already registered");
+                  showError("Email already registered");
                 } else {
-                  alert("Please fill all required fields");
+                  showError("Please fill all required fields");
                 }
                 break;
               case 500:
-                alert("Server error. Please try again later.");
+                showError("Server error. Please try again later.");
                 break;
               default:
-                alert("Registration failed. Please try again.");
+                showError("Registration failed. Please try again.");
             }
           } else {
-            alert("Network error. Please check your connection.");
+            showError("Network error. Please check your connection.");
           }
         } finally {
           setSignupLoading(false);

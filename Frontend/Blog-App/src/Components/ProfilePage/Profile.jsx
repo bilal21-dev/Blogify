@@ -12,6 +12,7 @@ import EmailPopup from './EmailPopup';
 import PassPopup from './PassPopup';
 import { Divider } from 'antd';
 import { LoadingButton } from '../LoadingSpinner';
+import { showSuccess, showError } from '../../utils/toast';
 
 import ProfileHeader from './ProfileHeader';
 
@@ -41,7 +42,7 @@ const ProfilePage = () => {
             setMyblogs(myBlogs);
             setSharedPosts(sharedPosts);
         } catch (err) {
-            alert("Failed to fetch blogs. Please try again.");
+            showError("Failed to fetch blogs. Please try again.");
         }
     };
 
@@ -62,10 +63,10 @@ const ProfilePage = () => {
                 data: { userId }, // Pass userId in the request body
                 loadingMessage: "Deleting blog..."
             });
-            // alert(result.data.message);
+            showSuccess("Blog deleted successfully");
             fetchMyBlogs(); // Refresh the blogs after deletion
         } catch (error) {
-            alert(error.response?.data?.error || 'Failed to delete blog');
+            showError(error.response?.data?.error || 'Failed to delete blog');
         } finally {
             setDeleteLoading(prev => ({ ...prev, [blog._id]: false }));
         }

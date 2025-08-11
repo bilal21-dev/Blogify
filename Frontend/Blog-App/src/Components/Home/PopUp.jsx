@@ -134,6 +134,7 @@ import PropTypes from 'prop-types';
 import { MdCancel, MdCloudUpload, MdEdit } from "react-icons/md";
 import { FaImage, FaFileAlt, FaPen } from "react-icons/fa";
 import axios from 'axios'
+import { showSuccess, showError } from '../../utils/toast';
 
 function PopUp({ closePopUp, addBlog }) {
   const [title, setTitle] = useState('');
@@ -175,7 +176,7 @@ function PopUp({ closePopUp, addBlog }) {
 
   const handleSubmit = async () => {
     if (!title.trim() || !description.trim()) {
-      alert('Please fill in all required fields');
+      showError('Please fill in all required fields');
       return;
     }
 
@@ -207,7 +208,7 @@ function PopUp({ closePopUp, addBlog }) {
         headers: { "Content-Type": "multipart/form-data" }
       });
       
-      alert('Blog saved successfully!');
+      showSuccess('Blog saved successfully!');
       closePopUp();
       setTitle('');
       setDescription('');
@@ -215,7 +216,7 @@ function PopUp({ closePopUp, addBlog }) {
       setImagePreview(null);
     } catch (error) {
       console.error('Error saving blog:', error);
-      alert('Failed to save blog. Please try again.');
+      showError('Failed to save blog. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

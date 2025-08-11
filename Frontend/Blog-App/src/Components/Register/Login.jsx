@@ -4,6 +4,7 @@ import apiClient from '../../utils/apiClient';
 import { useAuth } from "../AuthContext";
 import { useLoading } from "../LoadingContext";
 import { LoadingButton } from "../LoadingSpinner";
+import { showSuccess, showError } from '../../utils/toast';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -32,6 +33,7 @@ const Login = () => {
         localStorage.setItem("registry", true);
         setProfile(true);
         localStorage.setItem("profile", true);
+        showSuccess("Login successful! Welcome back.");
         // navigate(`/profile/${userData._id}`);
         navigate('/home'); // Redirect to home after login
       }
@@ -39,19 +41,19 @@ const Login = () => {
       if (error.response) {
         switch (error.response.status) {
           case 400:
-            alert("Please enter both email and password");
+            showError("Please enter both email and password");
             break;
           case 401:
-            alert("Invalid email or password");
+            showError("Invalid email or password");
             break;
           case 404:
-            alert("User not found");
+            showError("User not found");
             break;
           default:
-            alert("Login failed. Please try again.");
+            showError("Login failed. Please try again.");
         }
       } else {
-        alert("Network error. Please check your connection.");
+        showError("Network error. Please check your connection.");
       }
     } finally {
       setLoginLoading(false);
