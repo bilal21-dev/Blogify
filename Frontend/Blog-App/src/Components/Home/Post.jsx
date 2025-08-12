@@ -147,7 +147,7 @@ const Post = () => {
       });
 
       // Optionally, re-fetch the data from the backend
-      fetchBlogs();
+      // fetchBlogs();
     } catch (err) {
       console.error(err);
       showError("Failed to like/unlike the post. Reverting the change.");

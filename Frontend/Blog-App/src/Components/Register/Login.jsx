@@ -74,7 +74,7 @@ const Login = () => {
         
         <div className="relative z-10">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-black to-slate-500 bg-clip-text text-transparent mb-2">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-black to-blue-500 bg-clip-text text-transparent mb-2">
               Welcome Back
             </h2>
             <p className="text-black-300/80 text-sm">Sign in to continue your journey</p>
