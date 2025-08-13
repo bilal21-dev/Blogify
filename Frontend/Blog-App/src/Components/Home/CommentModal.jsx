@@ -213,7 +213,7 @@ const CommentModal = ({ isOpen, onClose, blog }) => {
                                     <div className="w-10 h-10 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full flex items-center justify-center flex-shrink-0 comment-avatar">
                                         {comment.userId?.profilePic ? (
                                             <img 
-                                                src={`http://localhost:5000/${comment.userId.profilePic}`}
+                                                src={comment.userId.profilePic}
                                                 alt={comment.userId.name}
                                                 className="w-full h-full rounded-full object-cover"
                                             />
