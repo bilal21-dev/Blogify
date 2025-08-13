@@ -263,38 +263,38 @@ const Post = () => {
                         </div>
 
                         {/* Content Section */}
-                        <div className="p-6 flex flex-col h-40">
-                          <div className="flex-1 space-y-3">
-                            <h3 className="text-xl font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
+                        <div className="p-4 sm:p-6 flex flex-col h-44 sm:h-40">
+                          <div className="flex-1 space-y-2 sm:space-y-3 overflow-hidden">
+                            <h3 className="text-lg sm:text-xl font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
                               {blog.title}
                             </h3>
-                            <p className="text-gray-600 line-clamp-3 leading-relaxed">
+                            <p className="text-sm sm:text-base text-gray-600 line-clamp-2 sm:line-clamp-3 leading-relaxed">
                               {blog.description}
                             </p>
                           </div>
 
                           {/* Engagement Bar - Always at bottom */}
-                          <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
-                            <div className="flex gap-4">
+                          <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-100 mt-auto flex-shrink-0">
+                            <div className="flex gap-3 sm:gap-4">
                               <LoadingButton
                                 onClick={() => handleLike(blog._id, index)}
                                 loading={actionLoading[`like_${blog._id}`]}
-                                className="flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors cursor-pointer bg-transparent border-none p-0 h-auto"
+                                className="flex items-center gap-1 sm:gap-2 text-gray-500 hover:text-red-500 transition-colors cursor-pointer bg-transparent border-none p-0 h-auto"
                                 title={isLiked ? "Unlike post" : "Like post"}
                                 loadingText=""
                               >
-                                <div className="flex items-center gap-2">
-                                  {isLiked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
-                                  <span className="text-sm">{blog.likes.length}</span>
+                                <div className="flex items-center gap-1 sm:gap-2">
+                                  {isLiked ? <FaHeart className="text-red-500 text-sm" /> : <FaRegHeart className="text-sm" />}
+                                  <span className="text-xs sm:text-sm">{blog.likes.length}</span>
                                 </div>
                               </LoadingButton>
                               <button
                                 onClick={() => handleCommentClick(blog)}
-                                className="flex items-center gap-2 text-gray-500 hover:text-blue-500 transition-colors cursor-pointer"
+                                className="flex items-center gap-1 sm:gap-2 text-gray-500 hover:text-blue-500 transition-colors cursor-pointer"
                                 title="View comments"
                               >
-                                <FaRegComment />
-                                <span className="text-sm">
+                                <FaRegComment className="text-sm" />
+                                <span className="text-xs sm:text-sm">
                                   {blog.commentCount || 0}
                                 </span>
                               </button>
@@ -306,7 +306,7 @@ const Post = () => {
                               title="Share post"
                               loadingText=""
                             >
-                              <FaShareSquare />
+                              <FaShareSquare className="text-sm" />
                             </LoadingButton>
                           </div>
                         </div>
