@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5000', // Updated to match your backend URL
+  baseURL: 'https://blogverse-backend-vpue.onrender.com', // Updated to match your backend URL
   timeout: 30000, // 30 second timeout
 });
 
