@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import apiClient from '../utils/apiClient';
 import { useParams } from 'react-router-dom';
 import { showSuccess, showError } from '../utils/toast';
 
@@ -53,7 +53,7 @@ export const ProfileSettingsProvider = ({ children }) => {
     const params = useParams();
     const getEmail = async () => {
         try {
-            const result = await axios.get(`http://localhost:5000/update/${user._id}`);
+            const result = await apiClient.get(`/update/${user._id}`);
             if (result) {
                 setEmail(result.data.email); // Set displayed email
                 setTempEmail(result.data.email); // Initialize temp email with current email
@@ -69,7 +69,9 @@ export const ProfileSettingsProvider = ({ children }) => {
     };
     const updateEmail = async () => {
         try {
-            const response = await axios.put(`http://localhost:5000/update/${user._id}`, { email: tempEmail });
+            const response = await apiClient.put(`/update/${user._id}`, { email: tempEmail }, {
+                loadingMessage: "Updating email..."
+            });
             if (response.data) {
                 const updatedUser = { ...user, email: tempEmail };
                 localStorage.setItem('user', JSON.stringify(updatedUser));
@@ -87,9 +89,11 @@ export const ProfileSettingsProvider = ({ children }) => {
     const updateBio = async (e) => {
         if (user && user._id) {
             try {
-                const response = await axios.post('http://localhost:5000/status', {
+                const response = await apiClient.post('/status', {
                     userId: user._id,
                     bio: tempBio, // Use tempBio for the update
+                }, {
+                    loadingMessage: "Updating bio..."
                 });
                 if (response.data) {
                     const updatedUser = { ...user, status: tempBio };
@@ -108,7 +112,7 @@ export const ProfileSettingsProvider = ({ children }) => {
     const fetchBio = async () => {
         if (user && user._id) {
             try {
-                const response = await axios.get(`http://localhost:5000/status/${user._id}`);
+                const response = await apiClient.get(`/status/${user._id}`);
                 const fetchedBio = response.data.bio || "";
                 setBio(fetchedBio); // Set the actual bio
                 setTempBio(fetchedBio); // Set the editable bio
@@ -130,9 +134,11 @@ export const ProfileSettingsProvider = ({ children }) => {
     };
     const updatePass = async () => {
         try {
-            const response = await axios.put(`http://localhost:5000/password/${user._id}`, {
+            const response = await apiClient.put(`/password/${user._id}`, {
                 currentPassword: password,
                 newPassword: newPassword,
+            }, {
+                loadingMessage: "Updating password..."
             });
 
             if (response.data.success) {
