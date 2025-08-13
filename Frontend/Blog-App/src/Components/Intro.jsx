@@ -168,7 +168,7 @@ const Intro = () => {
                             animateBy="words"
                             direction="top"
                             onAnimationComplete={handleAnimationComplete}
-                            className="whitespace-nowrap  text-3xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight mt-5 text-white ml-14 sm:ml-20"
+                            className="whitespace-nowrap  text-3xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight mt-5 text-white ml-12 sm:ml-20"
                             style={{
                                 background: 'linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%)',
                                 WebkitBackgroundClip: 'text',
