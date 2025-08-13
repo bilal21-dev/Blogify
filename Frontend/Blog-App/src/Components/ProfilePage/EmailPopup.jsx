@@ -1,4 +1,4 @@
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { MdCancel } from 'react-icons/md';
@@ -10,7 +10,7 @@ const EmailPopup = ({ setEmailPopup }) => {
 
   const getEmail = async () => {
     try {
-      const resut = await axios.get(`http://localhost:5000/update/${params.id}`);
+      const resut = await apiClient.get(`/update/${params.id}`);
       if (resut) {
         setEmail(resut.data.email);
       } else {
@@ -27,7 +27,9 @@ const EmailPopup = ({ setEmailPopup }) => {
 
   const updateEmail = async (e) => {
     try {
-      const response = await axios.put(`http://localhost:5000/update/${params.id}`, { email });
+      const response = await apiClient.put(`/update/${params.id}`, { email }, {
+        loadingMessage: "Updating email..."
+      });
       if (response.data) {
         showSuccess('Email updated successfully!');
       } else {

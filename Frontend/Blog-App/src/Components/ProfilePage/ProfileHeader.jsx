@@ -3,7 +3,7 @@ import { Button, message, Upload, Modal, Collapse } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { FaRegEdit, FaCamera, FaUser, FaEnvelope, FaLock, FaFileAlt } from "react-icons/fa";
 import { useProfileSettings } from '../ProfileSettingsContext';
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 
 const ProfileHeader = () => {
     const [modalText, setModalText] = useState('Content of the modal');
@@ -62,18 +62,19 @@ const ProfileHeader = () => {
 
         try {
             console.log("uploading...");
-            const response = await axios.post(
-                `http://localhost:5000/upload-profile-pic/${user._id}`,
+            const response = await apiClient.post(
+                `/upload-profile-pic/${user._id}`,
                 formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
+                    loadingMessage: "Uploading profile picture..."
                 }
             );
 
-            if (response.data.filePath) {
-                const newProfilePic = `http://localhost:5000/${response.data.filePath}`;
+            if (response.data.profilePicUrl) {
+                const newProfilePic = response.data.profilePicUrl; // Direct Cloudinary URL
                 setProfilePic(newProfilePic);
                 localStorage.setItem('profilePic', newProfilePic);
                 message.success('Profile picture uploaded successfully.');
@@ -107,15 +108,15 @@ const ProfileHeader = () => {
                 setProfilePic(storedProfilePic);
             } else {
                 // Fetch user data from backend if not in local storage
-                const response = await axios.get(`http://localhost:5000/profile-pic/${user._id}`);
+                const response = await apiClient.get(`/profile-pic/${user._id}`);
                 if (response.data.user && response.data.user.profilePic && response.data.user.profilePic.trim() !== '') {
                     const { profilePic } = response.data.user;
 
-                    const profilePicUrl = `http://localhost:5000/${profilePic}`;
-                    setProfilePic(profilePicUrl);
+                    // profilePic is now a direct Cloudinary URL
+                    setProfilePic(profilePic);
 
                     // Save profile picture in local storage
-                    localStorage.setItem('profilePic', profilePicUrl);
+                    localStorage.setItem('profilePic', profilePic);
                 } else {
                     // No profile picture found, use the default placeholder
                     setProfilePic(defaultProfilePic);

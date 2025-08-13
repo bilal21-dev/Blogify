@@ -138,7 +138,7 @@ const ProfilePage = () => {
                                             <div className="relative h-56 overflow-hidden">
                                                 {blog.image ? (
                                                     <img
-                                                        src={`http://localhost:5000/${blog.image}`}
+                                                        src={blog.image}
                                                         alt={blog.title}
                                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                                     />
@@ -257,7 +257,7 @@ const ProfilePage = () => {
                                             <div className="relative h-56 overflow-hidden">
                                                 {blog.image ? (
                                                     <img
-                                                        src={`http://localhost:5000/${blog.image}`}
+                                                        src={blog.image}
                                                         alt={blog.title}
                                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                                     />

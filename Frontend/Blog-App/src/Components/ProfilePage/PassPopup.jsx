@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 import { MdCancel } from 'react-icons/md';
 import { showSuccess, showError } from '../../utils/toast';
 
@@ -16,11 +16,13 @@ const PassPopup = ({ setPassPopup }) => {
 
     const updatePass = async () => {
         try {
-            const result = await axios.get(`http://localhost:5000/update/${params.id}`);
+            const result = await apiClient.get(`/update/${params.id}`);
             if (result) {
                 if (result.data.password === password) {
                     try {
-                        const response = await axios.put(`http://localhost:5000/update/${params.id}`, { password: newPassword });
+                        const response = await apiClient.put(`/update/${params.id}`, { password: newPassword }, {
+                            loadingMessage: "Updating password..."
+                        });
                         if (response.data) {
                             showSuccess('Password updated successfully!');
                             setPassPopup(false);

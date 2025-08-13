@@ -1,45 +1,53 @@
 const express = require('express');
 const cors = require("cors");
+require('dotenv').config();
 require('./db/config');
 const User = require('./db/User');
 const Blog = require('./db/Blog');
 const Comment = require('./db/Comment');
 const multer = require("multer");
 const path = require("path");
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const app = express();
 app.use(express.json());
 app.use(cors());
 const bcrypt = require('bcrypt');
 
-// Set up multer storage and file naming
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads"); // Ensure this folder exists
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname); // Unique file name
+// Configure Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Configure Cloudinary storage for multer
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'blog-app', // Folder name in Cloudinary
+        allowedFormats: ['jpeg', 'png', 'jpg', 'gif', 'webp'], // Supported file formats
+        transformation: [{ width: 1000, height: 1000, crop: 'limit' }], // Optional: resize images
     },
 });
 
-// Initialize multer
-const upload = multer({ storage });
+// Configure Cloudinary storage for profile pictures
+const profileStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'blog-app/profiles', // Folder for profile pictures
+        allowedFormats: ['jpeg', 'png', 'jpg', 'gif', 'webp'],
+        transformation: [{ width: 500, height: 500, crop: 'fill', gravity: 'face' }], // Square profile pics
+    },
+});
 
-// Serve static files from 'uploads' folder
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Initialize multer with Cloudinary storage
+const upload = multer({ storage });
+const profileUpload = multer({ storage: profileStorage });
 
 // Signup Route
 
-// app.post("/signup", async (req, res) => {
-//     if (req.body.password && req.body.email && req.body.name) {
-//         let user = new User(req.body);
-//         let result = await user.save();
-//         result = result.toObject();
-//         delete result.password;
-//         res.send(result);
-//     } else {
-//         res.send({ result: "Enter Complete information" });
-//     }
-// });
+
 app.post("/signup", async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -77,19 +85,6 @@ app.post("/signup", async (req, res) => {
     }
 });
 
-// Login Route
-// app.post("/login", async (req, res) => {
-//     if (req.body.password && req.body.email) {
-//         let user = await User.findOne(req.body).select("-password");
-//         if (user) {
-//             res.send(user);
-//         } else {
-//             res.send({ result: "No record" });
-//         }
-//     } else {
-//         res.send({ result: "Enter Complete details" });
-//     }
-// });
 
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
@@ -138,12 +133,12 @@ app.put("/update/:id", async (req, res) => {
     res.send(result)
 })
 
-// Home Route with Image Upload
+// Home Route with Image Upload to Cloudinary
 app.post("/home", upload.single("image"), async (req, res) => {
     try {
         const { title, description, content, author } = req.body;
-        // const image = req.file ? req.file.path : null; // Save image path
-        const image = req.file ? path.join('uploads', req.file.filename).replace(/\\/g, '/') : null;
+        // Get Cloudinary URL instead of local path
+        const image = req.file ? req.file.path : null; // Cloudinary URL
 
         const blog = new Blog({ title, description, content, image, author });
         const savedBlog = await blog.save();
@@ -319,19 +314,31 @@ app.get('/status/:userId', async (req, res) => {
     }
 });
 
-app.post('/upload-profile-pic/:userId', upload.single('profilePic'), async (req, res) => {
+app.post('/upload-profile-pic/:userId', profileUpload.single('profilePic'), async (req, res) => {
     try {
         const userId = req.params.userId;
-        const filePath = req.file.path;
+        const cloudinaryUrl = req.file ? req.file.path : null; // Cloudinary URL
 
-        // Update user profile picture in the database
-        const user = await User.findByIdAndUpdate(userId, { profilePic: filePath }, { new: true });
+        if (!cloudinaryUrl) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+
+        // Update user profile picture in the database with Cloudinary URL
+        const user = await User.findByIdAndUpdate(
+            userId, 
+            { profilePic: cloudinaryUrl }, 
+            { new: true }
+        );
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.status(200).json({ message: 'Profile picture updated', filePath });
+        res.status(200).json({ 
+            message: 'Profile picture updated', 
+            profilePicUrl: cloudinaryUrl,
+            cloudinaryPublicId: req.file.filename // Store public_id for potential deletion
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
@@ -547,8 +554,32 @@ app.delete("/api/comments/:id", async (req, res) => {
 
 // ===== END COMMENT ENDPOINTS =====
 
+// Utility function to delete image from Cloudinary
+const deleteFromCloudinary = async (publicId) => {
+    try {
+        const result = await cloudinary.uploader.destroy(publicId);
+        console.log('Cloudinary deletion result:', result);
+        return result;
+    } catch (error) {
+        console.error('Error deleting from Cloudinary:', error);
+        throw error;
+    }
+};
+
+// Optional: Add an endpoint to delete images (for cleanup)
+app.delete('/delete-image/:publicId', async (req, res) => {
+    try {
+        const { publicId } = req.params;
+        const result = await deleteFromCloudinary(publicId);
+        res.json({ message: 'Image deleted successfully', result });
+    } catch (error) {
+        console.error('Error deleting image:', error);
+        res.status(500).json({ error: 'Failed to delete image' });
+    }
+});
 
 // Start server
+// const PORT = process.env.PORT || 5000;
 app.listen(5000, () => {
-    console.log("Server is running on port 5000");
+    console.log(`Server is running on port 5000`);
 });
