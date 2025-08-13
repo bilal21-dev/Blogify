@@ -84,12 +84,12 @@ const About = () => {
       <div className="relative z-10 min-h-screen flex flex-col">
         {/* Header */}
         <div className="text-center pt-8 sm:pt-16 pb-4 sm:pb-8 px-4 sm:px-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-4 sm:mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-white/40 backdrop-blur-sm rounded-full border border-white/40 mb-4 sm:mb-6">
             <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-purple-400" />
             <span className="text-black/80 text-xs sm:text-sm font-medium">About Us</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-black via-blue-800 to-blue-200 bg-clip-text text-transparent mb-4 sm:mb-6">
-            Your Voice
+          <h1 className="text-5xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-black via-blue-800 to-blue-400 bg-clip-text text-transparent mb-4 sm:mb-6">
+            YOUR VOICE
           </h1>
           <p className="text-black/70 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
             The blogging platform where creativity, ideas, and stories come alive. Connect with like-minded individuals and make your voice heard.

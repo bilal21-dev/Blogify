@@ -102,7 +102,7 @@ const ProfileHeader = () => {
             // Check if the profile picture is already in local storage
             const storedProfilePic = localStorage.getItem('profilePic');
             const defaultProfilePic = 'https://static.vecteezy.com/system/resources/previews/020/911/746/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png';
-            
+
             if (storedProfilePic && storedProfilePic.trim() !== '' && storedProfilePic !== defaultProfilePic) {
                 setProfilePic(storedProfilePic);
             } else {
@@ -268,7 +268,7 @@ const ProfileHeader = () => {
                             </div>
                         </div>
                         <Upload {...uploadProps}>
-                            <Button 
+                            <Button
                                 icon={<UploadOutlined />}
                                 className="bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none hover:from-orange-600 hover:to-orange-700 h-12 px-8 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                             >
@@ -287,7 +287,7 @@ const ProfileHeader = () => {
             {/* Background with Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-600 to-purple-700"></div>
             <div className="absolute inset-0 bg-black/20"></div>
-            
+
             {/* Content */}
             <div className="relative">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -306,7 +306,7 @@ const ProfileHeader = () => {
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl"></div>
                                 </div>
-                                
+
                                 {/* Online Status */}
                                 <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-400 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
                                     <div className="w-3 h-3 bg-green-600 rounded-full animate-pulse"></div>
@@ -324,22 +324,20 @@ const ProfileHeader = () => {
                                         <span className="text-lg">{email}</span>
                                     </div>
                                 </div>
-                                
+
                                 {/* Bio Section */}
                                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                                    <div className="flex items-start gap-3">
+                                    <div className="flex justify-start items gap-3">
                                         <FaUser className="text-white/60 mt-1" />
-                                        <div>
-                                            <h3 className="text-white font-semibold mb-2">About</h3>
-                                            <p className="text-white/80 leading-relaxed">
-                                                {bio || "Welcome to my profile! I'm passionate about sharing stories and connecting with amazing people through the power of words."}
-                                            </p>
-                                        </div>
+                                        <h3 className="text-white font-semibold mb-2">About</h3>
                                     </div>
+                                    <p className="text-white/80 leading-relaxed">
+                                        {bio || "Welcome to my profile! I'm passionate about sharing stories and connecting with amazing people through the power of words."}
+                                    </p>
                                 </div>
 
                                 {/* Stats Row */}
-                               
+
                             </div>
 
                             {/* Edit Button */}
@@ -377,9 +375,9 @@ const ProfileHeader = () => {
                         </h2>
                         <p className="text-gray-600 mt-2">Customize your profile to make it uniquely yours</p>
                     </div>
-                    
-                    <Collapse 
-                        items={items} 
+
+                    <Collapse
+                        items={items}
                         className="premium-collapse"
                         ghost
                         expandIconPosition="end"

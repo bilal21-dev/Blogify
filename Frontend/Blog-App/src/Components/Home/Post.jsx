@@ -58,6 +58,8 @@ const Post = () => {
         loadingMessage: "Loading latest posts..."
       });
       setBlogs(response.data);
+      // Also save to localStorage to keep it in sync
+      localStorage.setItem("blogs", JSON.stringify(response.data));
     } catch (err) {
       setError(err.message || "Failed to fetch blogs");
     } finally {
@@ -85,6 +87,15 @@ const Post = () => {
         localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
         return updatedBlogs;
       });
+    }
+  };
+
+  // Function to refresh blogs after creating a new one
+  const onBlogCreated = async () => {
+    try {
+      await fetchBlogs(); // Refresh the blogs list
+    } catch (error) {
+      console.error('Error refreshing blogs:', error);
     }
   };
 
@@ -390,7 +401,7 @@ const Post = () => {
       </div>
 
       {/* Conditionally Render the PopUp */}
-      {isPopUpVisible && <PopUp closePopUp={handleClosePopUp} addBlog={addBlog} />}
+      {isPopUpVisible && <PopUp closePopUp={handleClosePopUp} addBlog={addBlog} onBlogCreated={onBlogCreated} />}
 
       {/* Comment Modal */}
       <CommentModal

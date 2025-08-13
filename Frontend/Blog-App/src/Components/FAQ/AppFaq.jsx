@@ -67,12 +67,12 @@ const PremiumFAQ = () => {
         <div className="w-full max-w-4xl">
           {/* Header */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/40 backdrop-blur-sm rounded-full border border-white/20 mb-6">
               <Sparkles className="w-4 h-4 text-purple-400" />
               <span className="text-black/80 text-sm font-medium">Support Center</span>
             </div>
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-black via-blue-800 to-blue-200 bg-clip-text text-transparent mb-4">
-              Frequently Asked Questions
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-black via-blue-800 to-blue-400 bg-clip-text text-transparent mb-4">
+              FREQUENTLY ASKED QUESTIONS
             </h1>
             <p className="text-black/60 text-lg max-w-2xl mx-auto">
               Everything you need to know about creating and managing your blogs on Verse

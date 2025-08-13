@@ -46,12 +46,12 @@ const Contact = () => {
             <div className="relative z-10 min-h-screen flex flex-col py-12 px-4">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-6">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/40 backdrop-blur-sm rounded-full border border-white/20 mb-6">
                         <Sparkles className="w-4 h-4 text-purple-400" />
                         <span className="text-black/80 text-sm font-medium">Get in Touch</span>
                     </div>
-                    <h1 className="text-6xl font-bold bg-gradient-to-r from-black via-blue-800 to-blue-200 bg-clip-text text-transparent mb-6">
-                        Contact Us
+                    <h1 className="text-5xl font-bold bg-gradient-to-r from-black via-blue-800 to-blue-400 bg-clip-text text-transparent mb-6">
+                        CONTACT US
                     </h1>
                     <p className="text-black/70 text-xl max-w-3xl mx-auto leading-relaxed">
                         Have questions, feedback, or just want to say hello? We'd love to hear from you! 

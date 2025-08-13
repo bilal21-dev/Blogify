@@ -136,7 +136,7 @@ import { FaImage, FaFileAlt, FaPen } from "react-icons/fa";
 import axios from 'axios'
 import { showSuccess, showError } from '../../utils/toast';
 
-function PopUp({ closePopUp, addBlog }) {
+function PopUp({ closePopUp, addBlog, onBlogCreated }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
@@ -209,6 +209,12 @@ function PopUp({ closePopUp, addBlog }) {
       });
       
       showSuccess('Blog saved successfully!');
+      
+      // Refresh the blogs list on the homepage
+      if (onBlogCreated) {
+        await onBlogCreated();
+      }
+      
       closePopUp();
       setTitle('');
       setDescription('');
@@ -457,6 +463,7 @@ function PopUp({ closePopUp, addBlog }) {
 PopUp.propTypes = {
   closePopUp: PropTypes.func.isRequired,
   addBlog: PropTypes.func.isRequired,
+  onBlogCreated: PropTypes.func,
 };
 
 export default PopUp;
