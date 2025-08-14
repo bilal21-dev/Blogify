@@ -4,6 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { FaRegEdit, FaCamera, FaUser, FaEnvelope, FaLock, FaFileAlt } from "react-icons/fa";
 import { useProfileSettings } from '../ProfileSettingsContext';
 import apiClient from '../../utils/apiClient';
+import ShinyText from '../ShinyText';
 
 const ProfileHeader = () => {
     const [modalText, setModalText] = useState('Content of the modal');
@@ -324,17 +325,14 @@ const ProfileHeader = () => {
                                         <FaEnvelope className="text-lg" />
                                         <span className="text-lg">{email}</span>
                                     </div>
-                                </div>
-
-                                {/* Bio Section */}
-                                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                                    <div className="flex justify-start items gap-3">
-                                        <FaUser className="text-white/60 mt-1" />
-                                        <h3 className="text-white font-semibold mb-2">About</h3>
+                                    <div className="max-w-2xl">
+                                        <ShinyText 
+                                            text={bio || "Welcome to my profile! I'm passionate about sharing stories and connecting with amazing people through the power of words."} 
+                                            disabled={false} 
+                                            speed={3} 
+                                            className='custom-class font-semibold' 
+                                        />
                                     </div>
-                                    <p className="text-white/80 leading-relaxed">
-                                        {bio || "Welcome to my profile! I'm passionate about sharing stories and connecting with amazing people through the power of words."}
-                                    </p>
                                 </div>
 
                                 {/* Stats Row */}
